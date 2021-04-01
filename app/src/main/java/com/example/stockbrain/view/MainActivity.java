@@ -1,8 +1,10 @@
-package com.example.stockbrain;
+package com.example.stockbrain.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.stockbrain.R;
 
 public class MainActivity extends AppCompatActivity {
 
