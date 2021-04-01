@@ -1,4 +1,4 @@
-package com.example.stockbrain.controller;
+package com.example.stockbrain.viewmodel;
 
 import android.view.View;
 
