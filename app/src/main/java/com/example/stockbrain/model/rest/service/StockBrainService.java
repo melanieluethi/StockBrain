@@ -8,6 +8,6 @@ import retrofit2.http.GET;
 
 public interface StockBrainService {
     // TODO: LUM - Change security to company details
-    @GET("/security")
+    @GET("/prices?api-key=VVSzN6wGL8gKtyZyXt1OlrdzxJs9JpaH&ticker=GOOG")
     Call<Security> getCompanyDetail();
 }

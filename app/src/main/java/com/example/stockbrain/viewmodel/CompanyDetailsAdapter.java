@@ -21,8 +21,8 @@ public class CompanyDetailsAdapter extends BaseObservable implements ListItemInt
 
     }
 
-    public void getCompanyDetails(String symbol) {
-        StockBrainService service = RetrofitClientInstance.getRetrofitInstance(symbol).create(StockBrainService.class);
+    public void getCompanyDetails(String ticker) {
+        StockBrainService service = RetrofitClientInstance.getRetrofitInstance(ticker).create(StockBrainService.class);
         // TODO: LUM - change Security to Company details
         Call<Security> call = service.getCompanyDetail();
         call.enqueue(new Callback<Security>() {

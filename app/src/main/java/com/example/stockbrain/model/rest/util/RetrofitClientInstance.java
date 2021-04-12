@@ -6,11 +6,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClientInstance {
     private static Retrofit retrofit;
 
-    public static Retrofit getRetrofitInstance(String symbol) {
+    public static Retrofit getRetrofitInstance(String ticker) {
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
-                    .baseUrl(RequestUtil.getUrl(symbol))
-                  //  .baseUrl(RestConstants.BASE_URL)
+                  //  .baseUrl(RequestUtil.getUrl(ticker))
+                    .baseUrl(RestConstants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
