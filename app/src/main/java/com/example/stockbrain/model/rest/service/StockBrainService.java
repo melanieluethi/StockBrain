@@ -1,10 +1,13 @@
 package com.example.stockbrain.model.rest.service;
 
-import android.telecom.Call;
+import com.example.stockbrain.model.businessobject.Security;
+
+import retrofit2.Call;
 
 import retrofit2.http.GET;
 
 public interface StockBrainService {
-//    @GET("/companyDetails")
-//    Call<CompanyDetails> getCompanyDetail();
+    // TODO: LUM - Change security to company details
+    @GET("/security")
+    Call<Security> getCompanyDetail();
 }
