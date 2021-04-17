@@ -5,13 +5,8 @@ import android.media.Image;
 import com.google.gson.annotations.SerializedName;
 
 public class Security {
-    @SerializedName("tickerSymbol")
     private String tickerSymbol;
-
-    @SerializedName("name")
     private String name;
-
-    @SerializedName("logo")
     private Image logo;
 
     public Security(String tickerSymbol, String name, Image logo) {
