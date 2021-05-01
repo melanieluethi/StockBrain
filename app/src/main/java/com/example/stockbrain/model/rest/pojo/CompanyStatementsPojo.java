@@ -2,25 +2,22 @@ package com.example.stockbrain.model.rest.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CompanyStatementsPojo {
-    @SerializedName("SimFinId")
-    private String simFinId;
+import java.util.List;
 
-    @SerializedName("Ticker")
-    private String ticker;
+public class CompanyStatementsPojo extends CompanyPojo {
+    @SerializedName("currency")
+    private String currency;
 
-    @SerializedName("Company Name")
-    private String companyName;
+    public CompanyStatementsPojo(boolean found, List<String> columns, List<Object> data, String currency) {
+        super(found, columns, data);
+        this.currency = currency;
+    }
 
-    @SerializedName("IndustryId")
-    private String industryId;
+    public String getCurrency() {
+        return currency;
+    }
 
-    @SerializedName("Month FY End")
-    private String monthFYEnd;
-
-    @SerializedName("Number Employees")
-    private String numberEmployees;
-
-    @SerializedName("Business Summary")
-    private String businessSummary;
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 }

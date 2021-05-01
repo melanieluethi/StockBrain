@@ -5,12 +5,6 @@ import android.view.View;
 import androidx.databinding.BaseObservable;
 
 import com.example.stockbrain.model.businessobject.Security;
-import com.example.stockbrain.model.rest.service.StockBrainService;
-import com.example.stockbrain.model.rest.util.RetrofitClientInstance;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CompanyDetailsAdapter extends BaseObservable implements ListItemInteractionInterface {
     private String result;
@@ -22,23 +16,10 @@ public class CompanyDetailsAdapter extends BaseObservable implements ListItemInt
     }
 
     public void getCompanyDetails(String ticker) {
-        StockBrainService service = RetrofitClientInstance.getRetrofitInstance(ticker).create(StockBrainService.class);
-        // TODO: LUM - change Security to Company details
-        Call<Security> call = service.getCompanyDetail();
-        call.enqueue(new Callback<Security>() {
-            @Override
-            public void onResponse(Call<Security> call, Response<Security> response) {
-                result = "Success";
-                //security = new Security(response.body().getTickerSymbol(), response.body().getName(), response.body().getLogo());
-            }
-
-            @Override
-            public void onFailure(Call<Security> call, Throwable t) {
-                // TODO: go to database and show old value
-
-                result = "Something went wrong! You get old data.\n" + t.getMessage();
-            }
-        });
+        // TODO LUM: handling when which methode is called and convert to dao
+        CompanyDetailsGetAdapter.getCompanyGeneral(ticker);
+//        CompanyDetailsGetAdapter.getCompanyPrices(ticker);
+//        CompanyDetailsGetAdapter.getCompanyStatements(ticker);
     }
 
     public String getResult() {
