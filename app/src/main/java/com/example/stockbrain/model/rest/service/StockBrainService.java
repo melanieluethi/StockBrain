@@ -14,12 +14,12 @@ public interface StockBrainService {
     @GET("/api/v2/companies/general")
     Call<List<CompanyPojo>> getCompany(@Query("ticker") String ticker);
 
-    @GET("/api/v2/companies/prices?")
-    Call<List<CompanyPojo>> getCompanyPrices(@Query("&ticker") String ticker);
+    @GET("/api/v2/companies/prices")
+    Call<List<CompanyPojo>> getCompanyPrices(@Query("ticker") String ticker);
 
-    @GET("/api/v2/companies/statements?")
-    Call<List<CompanyStatementsPojo>> getCompanyStatements(@Query("&ticker") String ticker,
-                                                          @Query("&statement") String statement,
-                                                          @Query("&period") String period,
-                                                          @Query("&fyear") Integer fYear);
+    @GET("/api/v2/companies/statements")
+    Call<List<CompanyStatementsPojo>> getCompanyStatements(@Query("ticker") String ticker,
+                                                          @Query("statement") String statement,
+                                                          @Query("period") String period,
+                                                          @Query("fyear") Integer fYear);
 }

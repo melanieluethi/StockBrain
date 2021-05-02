@@ -18,8 +18,8 @@ public class CompanyDetailsAdapter extends BaseObservable implements ListItemInt
     public void getCompanyDetails(String ticker) {
         // TODO LUM: handling when which methode is called and convert to dao
         CompanyDetailsGetAdapter.getCompanyGeneral(ticker);
-//        CompanyDetailsGetAdapter.getCompanyPrices(ticker);
-//        CompanyDetailsGetAdapter.getCompanyStatements(ticker);
+        CompanyDetailsGetAdapter.getCompanyPrices(ticker);
+        CompanyDetailsGetAdapter.getCompanyStatements(ticker);
     }
 
     public String getResult() {
