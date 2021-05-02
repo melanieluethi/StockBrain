@@ -1,7 +1,7 @@
 package com.example.stockbrain.model.database;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class StockBrainDatabaseHelper extends SQLiteOpenHelper {
@@ -23,67 +23,28 @@ public class StockBrainDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        db.execSQL("CREATE TABLE Exchange ("
-                + "'exchange_id' INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "'name' VARCHAR(10) NOT NULL, "
-                + "'currency' CHAR(3) DEFAULT NULL, "
-                + "'created_date' DATETIME DEFAULT CURRENT_TIMESTAMP(), "
-                + "'last_updated' DATETIME DEFAULT CURRENT_TIMESTAMP(), "
-                + "DEFAULT CHARACTER SET = utf8;");
-
-
-        db.execSQL("CREATE TABLE SECURITY ("
+        db.execSQL("CREATE TABLE SECURITY_TABLE ("
                 + "'security_id' INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "'exchange_id' INTEGER NOT NULL, "
                 + "'ticker' VARCHAR(10) NOT NULL, "
                 + "'name' VARCHAR DEFAULT NULL, "
-                + "'sector' VARCHAR DEFAULT NULL, "
-                + "'industry' VARCHAR, "
-                + "'created_date' DATETIME DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(), "
-                + "'last_updated' DATETIME DEFAULT CURRENT_TIMESTAMP() " +
-                "ON UPDATE CURRENT_TIMESTAMP(), "
-                + "PRIMARY KEY ('security_id'), "
-                + "INDEX 'exchange_id' ('exchange_id' ASC),"
-                + "INDEX 'ticker' ('ticker' ASC), "
-                + "CONSTRAINT 'fk_exchange_id' FOREIGN KEY ('exchange_id') " +
-                "REFERENCES 'exchange' ('id')" +
-                "ON DELETE NO ACTION" +
-                "ON UPDATE NO ACTION)," +
-                "DEFAULT CHARACTER SET = utf8;");
+                + "PRIMARY KEY ('security_id'));");
 
         db.execSQL("CREATE TABLE DailyPrice ( " +
                 "  'dailyPrice_id' INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "  'data_vendor_id' INT(11) NOT NULL, " +
-                "  'ticker_id' INT(11) NOT NULL, " +
+                "  'ticker_id' INTEGER NOT NULL, " +
                 "  'price_date' DATE NOT NULL, " +
-                "  'created_date' DATETIME DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(), " +
-                "  'last_updated' DATETIME DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(), " +
-                "  'open_price'' DECIMAL(11,6) NULL DEFAULT NULL, " +
-                "  'high_price'' DECIMAL(11,6) NULL DEFAULT NULL, " +
-                "  'low_price' DECIMAL(11,6) NULL DEFAULT NULL, " +
-                "  'close_price' DECIMAL(11,6) NULL DEFAULT NULL, " +
-                "  'adj_close_price' DECIMAL(11,6) NULL DEFAULT NULL, " +
-                "  'volume' BIGINT(20) NULL DEFAULT NULL, " +
-                "  PRIMARY KEY (‘dailyPrice_id’), " +
-                "  INDEX ‘price_date’ (‘price_date’ ASC), " +
-                "  INDEX ‘ticker_id’ (‘ticker_id’ ASC), " +
-                "  CONSTRAINT ‘fk_ticker_id’ " +
-                "    FOREIGN KEY (‘ticker_id’) " +
-                "    REFERENCES ‘security’ (‘dailyPrice_id’) " +
-                "    ON DELETE NO ACTION " +
-                "    ON UPDATE NO ACTION, " +
-                "  CONSTRAINT ‘fk_data_vendor_id’ " +
-                "    FOREIGN KEY (‘data_vendor_id’) " +
-                "    REFERENCES ‘data_vendor’ (‘dailyPrice_id’) " +
-                "    ON DELETE NO ACTION " +
-                "    ON UPDATE NO ACTION) " +
-                "DEFAULT CHARACTER SET = utf8; ");
+                "  'close_price' DECIMAL(11,6) DEFAULT NULL, " +
+                "  'volume' BIGINT(20) DEFAULT NULL, " +
+                "  CONSTRAINT 'fk_ticker_id' " +
+                "    FOREIGN KEY ('ticker_id') " +
+                "    REFERENCES 'security' ('security_id'));");
+
 
         db.execSQL("Create Table FundamentalData (" +
                 "'fundamentalData_id' INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "'ticker_id' INTEGER NOT NULL, " +
-                "'turnover' DECIMAL(40,4) DEFAULT NULL, " +
-                "'profit' DECIMAL(40,4) DEFAULT NULL, " +
+                "'Revenue' DECIMAL(40,4) DEFAULT NULL, " +
+                "'Profit' DECIMAL(40,4) DEFAULT NULL, " +
                 "'Market_capitalization' DECIMAL(40,4) DEFAULT NULL, " +
 
                 "PRIMARY KEY ('fundamentalData_id'), " +
@@ -120,6 +81,12 @@ public class StockBrainDatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS SECURITY");
+        db.execSQL("DROP TABLE IF EXISTS DailyPrice");
+        db.execSQL("DROP TABLE IF EXISTS FundamentalData");
+        onCreate(db);
     }
+
+ //   public void showData(){//     Cursor result = db.rawQuery("SELECT Revenue FROM FundamentalData WHERE FK_Ticker_Symbol = Ticker_Symbol;");
+
 }

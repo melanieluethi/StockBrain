@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.stockbrain.R;
+import com.example.stockbrain.model.database.StockBrainDatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+        /**
+         * Referenz auf die Datenbank (Sollte in derjenigen Methode sein, wo der Button "show Data" aufgerufen wird)
+         */
+        // StockBrainDatabaseHelper stockBrainDatabaseHelper = new StockBrainDatabaseHelper(MainActivity.this);
+
     }
 
 }
