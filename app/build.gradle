@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.4.0'
 
     // Start ActiveAndroid
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:22.2.1'
     implementation 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
