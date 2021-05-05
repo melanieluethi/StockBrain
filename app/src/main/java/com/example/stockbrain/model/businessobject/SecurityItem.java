@@ -1,5 +1,6 @@
 package com.example.stockbrain.model.businessobject;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 import com.activeandroid.Model;
@@ -22,13 +23,13 @@ public class SecurityItem extends Model {
     @Column(name = "Name")
     private String name;
     @Column(name = "Logo")
-    private Image logo;
+    private Bitmap logo;
 
     public SecurityItem() {
         super();
 
     }
-    public SecurityItem(String tickerSymbol, String name, Image logo) {
+    public SecurityItem(String tickerSymbol, String name, Bitmap logo) {
         super();
         this.tickerSymbol = tickerSymbol;
         this.name = name;
@@ -60,11 +61,11 @@ public class SecurityItem extends Model {
         this.name = name;
     }
 
-    public Image getLogo() {
+    public Bitmap getLogo() {
         return logo;
     }
 
-    public void setLogo(Image logo) {
+    public void setLogo(Bitmap logo) {
         this.logo = logo;
     }
 

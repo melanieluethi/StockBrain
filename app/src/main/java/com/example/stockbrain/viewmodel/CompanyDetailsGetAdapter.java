@@ -1,11 +1,9 @@
 package com.example.stockbrain.viewmodel;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
-import android.os.Build;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.model.database.RepositoryProvider;
@@ -16,8 +14,10 @@ import com.example.stockbrain.model.rest.service.StockBrainService;
 import com.example.stockbrain.model.rest.util.RestConstants;
 import com.example.stockbrain.model.rest.util.RetrofitClientInstance;
 
+import java.io.InputStream;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +27,7 @@ public class CompanyDetailsGetAdapter {
     private SecurityItemRepository securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
 
     public void getCompanyGeneral(String ticker) {
-        StockBrainService service = RetrofitClientInstance.getRetrofitInstance().create(StockBrainService.class);
+        StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyPojo>> call = service.getCompany(ticker);
         call.enqueue(new Callback<List<CompanyPojo>>() {
             @Override
@@ -53,13 +53,35 @@ public class CompanyDetailsGetAdapter {
         });
     }
 
-    private Image getImage(String copmanyName) {
+    private Bitmap getImage(String copmanyName) {
         // TODO LUM: Implement Rest to get Company Logo
-        return null;
+        final Bitmap[] bmp = new Bitmap[1];
+        StockBrainService service = RetrofitClientInstance.getLogoRetrofitInstance().create(StockBrainService.class);
+        Call<ResponseBody> call = service.getCompanyLogo(copmanyName + ".com");
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    InputStream inputStream = response.body().byteStream();
+                    bmp[0] = BitmapFactory.decodeStream(inputStream);
+                    Log.d("getImage", "Successfully! " + inputStream.toString() + " " + bmp[0]);
+                } else {
+                    // TODO LUM: Incorrect Response - get old value form database
+                    Log.d("getImage", "Response Failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // TODO LUM: What happens if it fails?
+                Log.d("getImage", "FAILED");
+            }
+        });
+        return bmp[0];
     }
 
     public void getCompanyPrices(String ticker) {
-        StockBrainService service = RetrofitClientInstance.getRetrofitInstance().create(StockBrainService.class);
+        StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyPojo>> call = service.getCompanyPrices(ticker);
         call.enqueue(new Callback<List<CompanyPojo>>() {
             @Override
@@ -83,7 +105,7 @@ public class CompanyDetailsGetAdapter {
     }
 
     public void getCompanyStatements(String ticker) {
-        StockBrainService service = RetrofitClientInstance.getRetrofitInstance().create(StockBrainService.class);
+        StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyStatementsPojo>> call = service.getCompanyStatements(ticker, RestConstants.STATEMENT, RestConstants.PERIOD, RestConstants.FYEAR);
         call.enqueue(new Callback<List<CompanyStatementsPojo>>() {
             @Override

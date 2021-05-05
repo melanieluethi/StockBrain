@@ -5,12 +5,17 @@ import com.example.stockbrain.model.rest.pojo.CompanyStatementsPojo;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface StockBrainService {
+    @GET("/{companyName}")
+    Call<ResponseBody> getCompanyLogo(@Path("companyName") String companyName);
+
     @GET("/api/v2/companies/general")
     Call<List<CompanyPojo>> getCompany(@Query("ticker") String ticker);
 

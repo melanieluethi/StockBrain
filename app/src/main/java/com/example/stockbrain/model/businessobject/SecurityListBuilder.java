@@ -1,5 +1,6 @@
 package com.example.stockbrain.model.businessobject;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Build;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class SecurityListBuilder {
     private String tickerSymbol;
     private String name;
-    private Image logo;
+    private Bitmap logo;
 
     public SecurityListBuilder withTickerSymbol(String tickerSymbol){
         this.tickerSymbol = tickerSymbol;
@@ -22,7 +23,7 @@ public class SecurityListBuilder {
         return this;
     }
 
-    public SecurityListBuilder withLogo(Image logo){
+    public SecurityListBuilder withLogo(Bitmap logo){
         this.logo = logo;
         return this;
     }

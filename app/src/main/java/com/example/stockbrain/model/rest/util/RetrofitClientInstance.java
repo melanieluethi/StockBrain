@@ -14,21 +14,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClientInstance {
-    private static Retrofit retrofit;
+    private static Retrofit stockRetrofit;
+    private static Retrofit logoRetrofit;
 
-    public static Retrofit getRetrofitInstance() {
-        if (retrofit == null) {
+    public static Retrofit getStockRetrofitInstance() {
+        if (stockRetrofit == null) {
             Gson gson = new GsonBuilder()
                     .setLenient()
                     .create();
 
-            retrofit = new retrofit2.Retrofit.Builder()
+            stockRetrofit = new retrofit2.Retrofit.Builder()
                     .client(getHttpClient())
-                    .baseUrl(RestConstants.BASE_URL)
+                    .baseUrl(RestConstants.BASE_URL_STOCK)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
-        return retrofit;
+        return stockRetrofit;
     }
 
     private static OkHttpClient getHttpClient(){
@@ -39,7 +40,7 @@ public class RetrofitClientInstance {
                 Request original = chain.request();
                 HttpUrl originalUrl = original.url();
                 HttpUrl url = originalUrl.newBuilder()
-                        .addQueryParameter("api-key", RestConstants.API_KEY)
+                        .addQueryParameter("api-key", RestConstants.API_KEY_STOCK)
                         .build();
                 Request.Builder requestBuilder = original.newBuilder().url(url);
                 Request request = requestBuilder.build();
@@ -47,5 +48,15 @@ public class RetrofitClientInstance {
             }
         });
         return httpClient.build();
+    }
+
+    public static Retrofit getLogoRetrofitInstance() {
+        if (logoRetrofit == null) {
+            logoRetrofit = new retrofit2.Retrofit.Builder()
+                    .baseUrl(RestConstants.BASE_URL_LOGO)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return logoRetrofit;
     }
 }
