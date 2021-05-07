@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">StockBrain</string>
+    <string-array name="saCountries">
+        <item>Schweiz/Suisse/Svizzera</item>
+        <item>Deutschland</item>
+        <item>England</item>
+        <item>USA</item>
+    </string-array>
+
 </resources>

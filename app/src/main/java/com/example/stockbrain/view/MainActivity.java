@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.stockbrain.R;
-import com.example.stockbrain.model.database.StockBrainDatabaseHelper;
+//import com.example.stockbrain.model.database.StockBrainDatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListAdapter theAdapter = new listViewAdapter(this, Companies);
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView = (ListView) findViewById(R.id.lvCompanies);
 
         listView.setAdapter(theAdapter);
 
@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                String tvShowPicked = "You Selected " + String.valueOf(adapterView.getItemAtPosition(position));
+                String stCompanyPicked = "You Selected " + String.valueOf(adapterView.getItemAtPosition(position));
 
-                Toast.makeText(MainActivity.this, tvShowPicked, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
 
             }
         });

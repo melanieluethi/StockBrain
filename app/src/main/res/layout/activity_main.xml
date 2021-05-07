@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     >
 
-    <ListView
+    <Spinner
+        android:id="@+id/spCountry"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listView"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:entries="@array/saCountries"
+        />
+
+    <ListView
+        android:id="@+id/lvCompanies"
+        android:layout_width="363dp"
+        android:layout_height="653dp"
+        android:layout_alignTop="@id/spCountry"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
 
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spCountry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
