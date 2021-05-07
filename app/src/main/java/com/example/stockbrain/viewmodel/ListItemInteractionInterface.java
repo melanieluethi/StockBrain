@@ -1,7 +1,12 @@
 package com.example.stockbrain.viewmodel;
 
-import android.view.View;
+import com.example.stockbrain.model.businessobject.SecurityItem;
+
+import java.util.List;
 
 public interface ListItemInteractionInterface {
-    void onItemClick(View view, int position);
+    List<SecurityItem> getCompanyList();
+    void getCompanyDetails(String ticker);
+    boolean createCompany(String ticker);
+    boolean deleteCompany(String ticker);
 }

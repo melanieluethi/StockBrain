@@ -1,15 +1,32 @@
 package com.example.stockbrain.viewmodel;
 
-import android.view.View;
+import android.os.Build;
 
 import androidx.databinding.BaseObservable;
+
+import com.example.stockbrain.model.businessobject.SecurityItem;
+import com.example.stockbrain.model.database.RepositoryProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompanyListAdapter extends BaseObservable implements ListItemInteractionInterface {
     private CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
 
-    @Override
-    public void onItemClick(View view, int position) {
+    public boolean createCompany(String ticker) {
+        return false;
+    }
 
+    @Override
+    public boolean deleteCompany(String ticker) {
+        return false;
+    }
+
+    public List<SecurityItem> getCompanyList() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems();
+        }
+        return new ArrayList<SecurityItem>();
     }
 
     public void getCompanyDetails(String ticker) {
@@ -19,5 +36,4 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
         companyDetailsGetAdapter.getCompanyPrices(ticker);
         companyDetailsGetAdapter.getCompanyStatements(ticker);
     }
-
 }
