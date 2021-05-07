@@ -1,7 +1,6 @@
 package com.example.stockbrain.model.businessobject;
 
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -48,7 +47,7 @@ public class SecurityListBuilder {
             return this;
         }
 
-        public SecurityListBuilder withShoppingListItems(List<SecurityListItem> securityListItems){
+        public SecurityListBuilder withSecurityListItems(List<SecurityListItem> securityListItems){
             this.securityListItems = securityListItems;
             return this;
         }

@@ -34,7 +34,7 @@ public class SecurityList extends Model implements Comparable<SecurityList> {
         return getSecurityListItemsFromDB(false);
     }
 
-    public SecurityListItem getShoppingListItem(SecurityItem securityItem) {
+    public SecurityListItem getSecurityListItem(SecurityItem securityItem) {
         for (SecurityListItem it:this.getSecurityListItems())
             if(it.getSecurityItem().equals(securityItem))
                 return it;
@@ -56,7 +56,7 @@ public class SecurityList extends Model implements Comparable<SecurityList> {
 
     @Override
     public String toString() {
-        return "ShoppingList{ID: " + getId() +
+        return "SecurityList{ID: " + getId() +
                 ",listName='" + listName + '\'' +
                 '}';
     }

@@ -16,10 +16,10 @@ public class SecurityItemRepository extends AbstractRepository {
 
 
     /**
-     * Returns only one shopping item with provided id.
+     * Returns only one security item with provided id.
      * Returns null if tupel with given id does not exist
      */
-    public SecurityItem getShoppingItemById(long id){
+    public SecurityItem getSecurityItemById(long id){
         return (SecurityItem) super.getById(SecurityItem.class, id);
     }
 

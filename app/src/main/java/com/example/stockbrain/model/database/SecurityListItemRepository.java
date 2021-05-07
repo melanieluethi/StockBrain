@@ -38,7 +38,7 @@ public class SecurityListItemRepository extends AbstractRepository{
      */
     public List<SecurityListItem> getSecurityListItems(SecurityItem securityItem) {
         return new Select().from(SecurityListItem.class)
-                .where("SecurityListItem.shoppingItem=?", new Object[]{securityItem.getTickerSymbol()})
+                .where("SecurityListItem.securityItem=?", new Object[]{securityItem.getTickerSymbol()})
                 .execute();
     }
 }

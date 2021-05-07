@@ -15,22 +15,22 @@ public class SecurityListItemBuilder {
         return this;
     }
 
-    public SecurityListItemBuilder withShoppingItem(SecurityItem shoppingItem){
+    public SecurityListItemBuilder withSecurityItem(SecurityItem securityItem){
         this.securityItem = securityItem;
         return this;
     }
 
-    public SecurityListItemBuilder withShoppingList(SecurityList shoppingList){
+    public SecurityListItemBuilder withSecurityList(SecurityList securityList){
         this.securityList = securityList;
         return this;
     }
 
     public SecurityListItem build(){
-        SecurityListItem shoppingListItem = new SecurityListItem();
-        shoppingListItem.setItemState(this.itemState);
-        shoppingListItem.setSecurityItem(this.securityItem);
-        shoppingListItem.setSecurityList(this.securityList);
-        return shoppingListItem;
+        SecurityListItem securityListItem = new SecurityListItem();
+        securityListItem.setItemState(this.itemState);
+        securityListItem.setSecurityItem(this.securityItem);
+        securityListItem.setSecurityList(this.securityList);
+        return securityListItem;
     }
 
 }
