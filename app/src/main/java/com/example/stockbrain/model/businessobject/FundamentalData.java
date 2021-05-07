@@ -7,7 +7,7 @@ import com.activeandroid.annotation.Table;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@Table(name = " Fundamental Data")
+@Table(name = " FundamentalData")
 public class FundamentalData extends Model {
 
     // This is the unique id given by the server
