@@ -6,14 +6,14 @@ import android.media.Image;
 public class SecurityItemBuilder {
 
     private String tickerSymbol;
-    private Bitmap logo;
+    private String urlLogo;
     private String name;
 
     public SecurityItemBuilder(){
         //set default values
         this.tickerSymbol = tickerSymbol;
         this.name = "";
-        this.logo = logo;
+        this.urlLogo = urlLogo;
     }
 
     public SecurityItemBuilder withItemName(String name){
@@ -25,12 +25,17 @@ public class SecurityItemBuilder {
         this.tickerSymbol = tickerSymbol;
         return this;
     }
+
+    public SecurityItemBuilder withUrlLogo(String urlLogo){
+        this.urlLogo = urlLogo;
+        return this;
+    }
+
     public SecurityItem build(){
         SecurityItem securityItem = new SecurityItem();
         securityItem.setTickerSymbol(this.tickerSymbol);
         securityItem.setName(this.name);
-        securityItem.setLogo(this.logo);
-
+        securityItem.setUrlLogo(this.urlLogo);
         return securityItem;
     }
 }

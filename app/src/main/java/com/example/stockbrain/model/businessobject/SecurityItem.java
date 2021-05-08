@@ -1,6 +1,7 @@
 package com.example.stockbrain.model.businessobject;
 
 import android.graphics.Bitmap;
+import android.media.Image;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -22,17 +23,17 @@ public class SecurityItem extends Model {
     @Column(name = "Name")
     private String name;
     @Column(name = "Logo")
-    private Bitmap logo;
+    private String urlLogo;
 
     public SecurityItem() {
         super();
 
     }
-    public SecurityItem(String tickerSymbol, String name, Bitmap logo) {
+    public SecurityItem(String tickerSymbol, String name, String urlLogo) {
         super();
         this.tickerSymbol = tickerSymbol;
         this.name = name;
-        this.logo = logo;
+        this.urlLogo = urlLogo;
     }
 
 
@@ -60,12 +61,12 @@ public class SecurityItem extends Model {
         this.name = name;
     }
 
-    public Bitmap getLogo() {
-        return logo;
+    public String getUrlLogo() {
+        return urlLogo;
     }
 
-    public void setLogo(Bitmap logo) {
-        this.logo = logo;
+    public void setUrlLogo(String urlLogo) {
+        this.urlLogo = urlLogo;
     }
 
     /**
@@ -83,7 +84,7 @@ public class SecurityItem extends Model {
             json.put("id", getId());
             json.put("TickerSymbol", tickerSymbol);
             json.put("Name", name);
-            json.put("Logo", logo);
+            json.put("Logo", urlLogo);
 
             return json;
         } catch (JSONException e) {

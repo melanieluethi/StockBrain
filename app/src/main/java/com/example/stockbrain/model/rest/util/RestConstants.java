@@ -6,5 +6,5 @@ public class RestConstants {
     public final static String STATEMENT = "pl";
     public final static String PERIOD = "q1";
     public final static Integer FYEAR = 2020;
-    protected final static String BASE_URL_LOGO = "https://logo.clearbit.com";
+    protected final static String BASE_URL_LOGO = "https://autocomplete.clearbit.com";
 }

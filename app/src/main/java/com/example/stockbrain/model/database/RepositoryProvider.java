@@ -6,8 +6,6 @@ import androidx.annotation.RequiresApi;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class RepositoryProvider {
-
-
     private static SecurityItemRepository securityItemRepository;
     private static SecurityListItemRepository securityListItemRepository;
     private static SecurityListRepository securityListRepository;
@@ -33,5 +31,4 @@ public class RepositoryProvider {
         }
         return securityListRepository;
     }
-
 }

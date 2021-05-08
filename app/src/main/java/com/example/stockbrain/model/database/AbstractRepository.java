@@ -28,11 +28,14 @@ public abstract class AbstractRepository {
      */
     public abstract List<? extends Model> getAllItems();
 
+    protected Model getByTicker(Class<? extends Model> entityClass, String tickerSymbol){
+        return new Select().from(entityClass).where("TickerSymbol=?", new Object[]{tickerSymbol}).executeSingle();
+    }
+
     /*
      * Returns a model with the given id in given class. This method is specified in subclasses!
      */
     protected Model getById(Class<? extends Model> entityClass, long id){
         return new Select().from(entityClass).where("Id=?", new Object[]{id}).executeSingle();
     }
-
 }
