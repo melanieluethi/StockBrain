@@ -2,15 +2,20 @@ package com.example.stockbrain.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.stockbrain.R;
-//import com.example.stockbrain.model.database.StockBrainDatabaseHelper;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,24 +24,53 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] Companies = {"Microsoft", "Apple", "Google"};
+        Hashtable <String, String> htCompanies = new Hashtable<String, String>();
+        htCompanies.put("USA", "Microsoft,Apple,Google");
+        htCompanies.put("Schweiz", "Nestle,Novartis,Roche");
+        htCompanies.put("UK", "HSBC");
+        htCompanies.put("Deutschland", "Rheinmetall,Deutsche Bank");
 
-        ListAdapter theAdapter = new listViewAdapter(this, Companies);
+        Spinner spCountry = (Spinner)findViewById(R.id.spCountry);
 
-        ListView listView = (ListView) findViewById(R.id.lvCompanies);
 
-        listView.setAdapter(theAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<String> Companies = new ArrayList<String>();
+                String text = spCountry.getSelectedItem().toString();
+                for (String company : htCompanies.get(text).split(",")) {
+                    Companies.add(company);
+                }
 
-                String stCompanyPicked = "You Selected " + String.valueOf(adapterView.getItemAtPosition(position));
+                String[] stCompanies = new String[Companies.size()];
+                stCompanies = Companies.toArray(stCompanies);
 
-                Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
+                ListAdapter theAdapter = new listViewAdapter(MainActivity.this, stCompanies);
 
+                ListView listView = (ListView) findViewById(R.id.lvCompanies);
+
+                listView.setAdapter(theAdapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                        String stCompanyPicked = "You Selected " + String.valueOf(adapterView.getItemAtPosition(position));
+
+                        Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
+
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                // sometimes you need nothing here
             }
         });
+
+
 
 
         /**
@@ -45,5 +79,5 @@ public class MainActivity extends AppCompatActivity {
         // StockBrainDatabaseHelper stockBrainDatabaseHelper = new StockBrainDatabaseHelper(MainActivity.this);
 
     }
-
 }
+

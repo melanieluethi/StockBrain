@@ -1,10 +1,19 @@
 <resources>
     <string name="app_name">StockBrain</string>
     <string-array name="saCountries">
-        <item>Schweiz/Suisse/Svizzera</item>
+        <item>Schweiz</item>
         <item>Deutschland</item>
-        <item>England</item>
+        <item>UK</item>
         <item>USA</item>
     </string-array>
+    <string-array name="saCompanyNames">
+        <item>Microsoft</item>
+        <item>Google</item>
+        <item>Apple</item>
+        <item>Nestle</item>
+        <item>Novartis</item>
+        <item>Roche</item>
+    </string-array>
+
 
 </resources>
