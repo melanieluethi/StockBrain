@@ -5,6 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.stockbrain.model.businessobject.DailyPrice;
+import com.example.stockbrain.model.businessobject.DailyPriceBuilder;
 import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.model.businessobject.SecurityItemBuilder;
 import com.example.stockbrain.model.database.RepositoryProvider;
@@ -25,6 +27,9 @@ import retrofit2.Response;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyDetailsGetAdapter {
     private SecurityItemRepository securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
+    private boolean isGettingCompany = false;
+    private boolean isGettingPrices = false;
+    private boolean isGettingStatements = false;
 
     protected void getCompanyGeneral(String ticker) {
         StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
@@ -40,16 +45,17 @@ public class CompanyDetailsGetAdapter {
                             .withItemName(companyName)
                             .build();
                     securityItemRepository.saveEntity(securityItem);
+                    isGettingCompany = true;
                     Log.d("getCompanyGeneral", "Successfully!");
                 } else {
-                    // TODO LUM: Incorrect Response - get old value form database
+                    isGettingCompany = false;
                     Log.d("getCompanyGeneral", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
-                // TODO LUM: What happens if it fails?
+                isGettingCompany = false;
                 Log.d("getCompanyGeneral", "FAILED");
             }
         });
@@ -76,14 +82,12 @@ public class CompanyDetailsGetAdapter {
                         getLogoUrl(ticker, s[0]);
                     }
                 } else {
-                    // TODO LUM: Incorrect Response - get old value form database
                     Log.d("getImage", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyLogoPojo>> call, Throwable t) {
-                // TODO LUM: What happens if it fails?
                 Log.d("getImage", "FAILED");
             }
         });
@@ -96,18 +100,27 @@ public class CompanyDetailsGetAdapter {
             @Override
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
-                    // TODO LUM: Convert Response in DAO
-                    List<Object> data = response.body().get(0).getData();
-                    Log.d("getCompanyPrices", "Successfull " + data.get(0).toString() + " " + data.get(1) + " " + data.get(2));
+                    String[] dataPrices = response.body().get(0).getData().get(0).toString().split(",");
+                    Double closingPrice = Double.parseDouble(dataPrices[7]);
+                    Double volume = Double.parseDouble(dataPrices[8]);
+                    Log.d("volume", volume.toString());
+                    DailyPrice dailyPrice = new DailyPriceBuilder()
+                            .withTickerSymbol(dataPrices[1])
+                            .withClosingPrice(closingPrice) // "Adj. Close" CORRECT?
+                            .withVolume(volume.intValue())
+                            .build();
+                    securityItemRepository.saveEntity(dailyPrice);
+                    isGettingPrices = true;
+                    Log.d("getCompanyPrices", "Successfully");
                 } else {
-                    // TODO LUM: Incorrect Response - get old value form database
+                    isGettingPrices = false;
                     Log.d("getCompanyPrices", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
-                // TODO LUM: What happens if it fails?
+                isGettingPrices = false;
                 Log.d("getCompanyPrices", "FAILED");
             }
         });
@@ -136,5 +149,29 @@ public class CompanyDetailsGetAdapter {
                 Log.d("getCompanyStatements", "FAILED");
             }
         });
+    }
+
+    public boolean isGettingCompany() {
+        return isGettingCompany;
+    }
+
+    public void setGettingCompany(boolean gettingCompany) {
+        isGettingCompany = gettingCompany;
+    }
+
+    public boolean isGettingPrices() {
+        return isGettingPrices;
+    }
+
+    public void setGettingPrices(boolean gettingPrices) {
+        isGettingPrices = gettingPrices;
+    }
+
+    public boolean isGettingStatements() {
+        return isGettingStatements;
+    }
+
+    public void setGettingStatements(boolean gettingStatements) {
+        isGettingStatements = gettingStatements;
     }
 }

@@ -1,19 +1,16 @@
 package com.example.stockbrain.model.businessobject;
 
-import android.graphics.Bitmap;
-import android.media.Image;
-
 public class SecurityItemBuilder {
 
     private String tickerSymbol;
     private String urlLogo;
     private String name;
 
-    public SecurityItemBuilder(){
+    public SecurityItemBuilder() {
         //set default values
-        this.tickerSymbol = tickerSymbol;
+        this.tickerSymbol = "";
         this.name = "";
-        this.urlLogo = urlLogo;
+        this.urlLogo = "";
     }
 
     public SecurityItemBuilder withItemName(String name){
