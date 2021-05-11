@@ -42,6 +42,7 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
         // TODO LUM: handling when which methode is called and get Data out of database
         CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
         companyDetailsGetAdapter.getCompanyPrices(ticker);
-//        companyDetailsGetAdapter.getCompanyStatements(ticker);
+        companyDetailsGetAdapter.getCompanyFundamentalData(ticker);
+//        companyDetailsGetAdapter.getCompanyFundamentalDataProfit(ticker);
     }
 }
