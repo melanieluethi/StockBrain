@@ -13,16 +13,9 @@ import java.util.List;
 
 public class CompanyListAdapter extends BaseObservable implements ListItemInteractionInterface {
 
-    public boolean createCompany(String ticker) {
+    public void createCompany(String ticker) {
         CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
         companyDetailsGetAdapter.getCompanyGeneral(ticker);
-        if (companyDetailsGetAdapter.isGettingCompany()) {
-            SecurityItemRepository securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
-            SecurityItem securityItem = securityItemRepository.getByTicker(ticker);
-            companyDetailsGetAdapter.getLogoUrl(ticker, securityItem.getName());
-            return true;
-        }
-        return false;
     }
 
     @Override

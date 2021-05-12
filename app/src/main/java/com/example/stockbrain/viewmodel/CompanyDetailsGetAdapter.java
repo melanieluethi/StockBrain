@@ -58,7 +58,7 @@ public class CompanyDetailsGetAdapter {
                             .withTickerSymbol(generalData.get(1).toString())
                             .withItemName(companyName)
                             .build();
-                    securityItemRepository.saveEntity(securityItem);
+                    getLogoUrl(companyName, securityItem);
                     isGettingCompany = true;
                     Log.d("getCompanyGeneral", "Successfully!");
                 } else {
@@ -75,8 +75,7 @@ public class CompanyDetailsGetAdapter {
         });
     }
 
-    protected void getLogoUrl(String ticker, String companyName) {
-        // TODO LUM: Implement Rest to get Company Logo
+    protected void getLogoUrl(String companyName, SecurityItem securityItem) {
         StockBrainService service = RetrofitClientInstance.getLogoRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyLogoPojo>> call = service.getCompanyLogo(companyName);
         call.enqueue(new Callback<List<CompanyLogoPojo>>() {
@@ -84,24 +83,24 @@ public class CompanyDetailsGetAdapter {
             public void onResponse(Call<List<CompanyLogoPojo>> call, Response<List<CompanyLogoPojo>> response) {
                 if (response.isSuccessful()) {
                     if (!response.body().isEmpty()) {
-                        SecurityItem securityItem = new SecurityItemBuilder()
-                                .withTickerSymbol(ticker)
-                                .withItemName(companyName)
-                                .withUrlLogo(response.body().get(0).getLogo())
-                                .build();
+                        String url = response.body().get(0).getLogo();
+                        securityItem.setUrlLogo(url);
                         securityItemRepository.saveEntity(securityItem);
+                        isGettingCompany = true;
                         Log.d("getImage", "Successfully!");
                     } else {
                         String[] s = companyName.split(" ");
-                        getLogoUrl(ticker, s[0]);
+                        getLogoUrl(s[0], securityItem);
                     }
                 } else {
+                    isGettingCompany = false;
                     Log.d("getImage", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyLogoPojo>> call, Throwable t) {
+                isGettingCompany = false;
                 Log.d("getImage", "FAILED");
             }
         });
@@ -158,7 +157,6 @@ public class CompanyDetailsGetAdapter {
                             .withLiabilities(liabilities)
                             .build();
                     getCompanyFundamentalDataProfit(ticker, fundamentalData);
-//                    fundamentalDataRepository.saveEntity(fundamentalData);
                     isGettingFundamentalData = true;
                     Log.d("getCompanyFundamentalData", "Successfully");
                 } else {
