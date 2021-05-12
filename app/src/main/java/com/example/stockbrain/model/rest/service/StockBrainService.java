@@ -2,7 +2,6 @@ package com.example.stockbrain.model.rest.service;
 
 import com.example.stockbrain.model.rest.pojo.CompanyLogoPojo;
 import com.example.stockbrain.model.rest.pojo.CompanyPojo;
-import com.example.stockbrain.model.rest.pojo.CompanyPricesPojo;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public interface StockBrainService {
     Call<List<CompanyPojo>> getCompany(@Query("ticker") String ticker);
 
     @GET("/api/v2/companies/prices")
-    Call<List<CompanyPricesPojo>> getCompanyPrices(@Query("ticker") String ticker);
+    Call<List<CompanyPojo>> getCompanyPrices(@Query("ticker") String ticker);
 
     @GET("/api/v2/companies/statements")
     Call<List<CompanyPojo>> getCompanyStatements(@Query("ticker") String ticker,

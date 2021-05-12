@@ -17,7 +17,6 @@ import com.example.stockbrain.model.database.RepositoryProvider;
 import com.example.stockbrain.model.database.SecurityItemRepository;
 import com.example.stockbrain.model.rest.pojo.CompanyLogoPojo;
 import com.example.stockbrain.model.rest.pojo.CompanyPojo;
-import com.example.stockbrain.model.rest.pojo.CompanyPricesPojo;
 import com.example.stockbrain.model.rest.service.StockBrainService;
 import com.example.stockbrain.model.rest.util.RestConstants;
 import com.example.stockbrain.model.rest.util.RetrofitClientInstance;
@@ -110,10 +109,10 @@ public class CompanyDetailsGetAdapter {
 
     protected void getCompanyPrices(String ticker) {
         StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
-        Call<List<CompanyPricesPojo>> call = service.getCompanyPrices(ticker);
-        call.enqueue(new Callback<List<CompanyPricesPojo>>() {
+        Call<List<CompanyPojo>> call = service.getCompanyPrices(ticker);
+        call.enqueue(new Callback<List<CompanyPojo>>() {
             @Override
-            public void onResponse(Call<List<CompanyPricesPojo>> call, Response<List<CompanyPricesPojo>> response) {
+            public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
                     String[] dataPrices = response.body().get(0).getData().get(0).toString().split(",");
                     Double closingPrice = Double.parseDouble(dataPrices[7]);
@@ -133,7 +132,7 @@ public class CompanyDetailsGetAdapter {
             }
 
             @Override
-            public void onFailure(Call<List<CompanyPricesPojo>> call, Throwable t) {
+            public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
                 isGettingPrices = false;
                 Log.d("getCompanyPrices", "FAILED");
             }
@@ -158,7 +157,8 @@ public class CompanyDetailsGetAdapter {
                             .withAssets(assets)
                             .withLiabilities(liabilities)
                             .build();
-                    fundamentalDataRepository.saveEntity(fundamentalData);
+                    getCompanyFundamentalDataProfit(ticker, fundamentalData);
+//                    fundamentalDataRepository.saveEntity(fundamentalData);
                     isGettingFundamentalData = true;
                     Log.d("getCompanyFundamentalData", "Successfully");
                 } else {
@@ -175,27 +175,28 @@ public class CompanyDetailsGetAdapter {
         });
     }
 
-    protected void getCompanyFundamentalDataProfit(String ticker) {
+    protected void getCompanyFundamentalDataProfit(String ticker, FundamentalData fundamentalData) {
         StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyPojo>> call = service.getCompanyStatements(ticker, RestConstants.STATEMENT_PROFIT_LOSS, RestConstants.PERIOD, RestConstants.FYEAR);
         call.enqueue(new Callback<List<CompanyPojo>>() {
             @Override
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
-                    // TODO LUM: Convert Response in DAO
-                    String[] dataStatements = response.body().get(0).getData().get(0).toString().split(",");
-                    Double profit = Double.parseDouble(dataStatements[18]);
-                    FundamentalData fundamentalData = fundamentalDataRepository.getByTicker(dataStatements[1]);
+                    String[] dataProfit = response.body().get(0).getData().get(0).toString().split(",");
+                    Double profit = Double.parseDouble(dataProfit[18]);
                     fundamentalData.setProfit(profit);
                     fundamentalDataRepository.saveEntity(fundamentalData);
+                    isGettingFundamentalData = true;
                     Log.d("getCompanyFundamentalDataProfit", "Successfully");
                 } else {
+                    isGettingFundamentalData = false;
                     Log.d("getCompanyFundamentalDataProfit", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
+                isGettingFundamentalData = false;
                 Log.d("getCompanyFundamentalDataProfit", "FAILED");
             }
         });

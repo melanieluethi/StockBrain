@@ -43,6 +43,5 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
         CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
         companyDetailsGetAdapter.getCompanyPrices(ticker);
         companyDetailsGetAdapter.getCompanyFundamentalData(ticker);
-//        companyDetailsGetAdapter.getCompanyFundamentalDataProfit(ticker);
     }
 }
