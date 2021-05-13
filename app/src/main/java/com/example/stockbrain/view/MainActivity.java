@@ -3,7 +3,9 @@ package com.example.stockbrain.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Adapter;
@@ -17,6 +19,7 @@ import com.example.stockbrain.viewmodel.AllCompanyDetails;
 import com.example.stockbrain.viewmodel.CompanyListAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         htCompanies.put("UK", "HSBC");
         htCompanies.put("Deutschland", "Rheinmetall,Deutsche Bank");
 
-        Spinner spCountry = (Spinner)findViewById(R.id.spCountry);
+        Spinner spCountry = findViewById(R.id.spCountry);
 
 
         spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -47,16 +50,14 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ArrayList<String> alCompanies = new ArrayList<String>();
                 String text = spCountry.getSelectedItem().toString();
-                for (String company : htCompanies.get(text).split(",")) {
-                    alCompanies.add(company);
-                }
+                Collections.addAll(alCompanies, htCompanies.get(text).split(","));
 
                 String[] saCompanies = new String[alCompanies.size()];
                 saCompanies = alCompanies.toArray(saCompanies);
 
                 ListAdapter theAdapter = new listViewAdapter(MainActivity.this, saCompanies);
 
-                ListView listView = (ListView) findViewById(R.id.lvCompanies);
+                ListView listView = findViewById(R.id.lvCompanies);
 
                 listView.setAdapter(theAdapter);
 
@@ -66,9 +67,11 @@ public class MainActivity extends AppCompatActivity {
                         // TODO Here should be the tickerSymbol of the choosen element and not the static "GOOG"
                         AllCompanyDetails allDetails = companyListAdapter.getAllCompanyDetails("GOOG");
 
-                        String stCompanyPicked = "You Selected " + String.valueOf(adapterView.getItemAtPosition(position));
+                        String stCompanyPicked = String.valueOf(adapterView.getItemAtPosition(position));
+                        String stCountry = spCountry.getSelectedItem().toString();
+                        //Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
 
-                        Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
+                        sendData(view, stCompanyPicked, stCountry);
 
                     }
                 });
@@ -81,14 +84,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         /**
          * Referenz auf die Datenbank (Sollte in derjenigen Methode sein, wo der Button "show Data" aufgerufen wird)
          */
         // StockBrainDatabaseHelper stockBrainDatabaseHelper = new StockBrainDatabaseHelper(MainActivity.this);
 
+    }
+
+    public void sendData(View view, String stCompanyPicked, String stCountry) {
+        // Define Intent
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+
+                            /* Alternative Bundle notation
+                            https://stackoverflow.com/questions/34607727/how-to-add-pass-multiple-values-to-intent-object
+                            https://zocada.com/using-intents-extras-pass-data-activities-android-beginners-guide/
+                            */
+
+        // Pass Data
+        intent.putExtra("COMPANY_NAME", stCompanyPicked);
+        intent.putExtra("COUNTRY", stCountry);
+
+        // Check for empty name
+        if (TextUtils.isEmpty(stCompanyPicked)) {
+            Toast.makeText(MainActivity.this, "Please select a Company", Toast.LENGTH_SHORT).show();
+        } else {
+            // Normally, when we launch a new activity, the previous activities will be kept in a queue like a stack of activities.
+            // So if you want to kill all the previous activities, use FLAG_ACTIVITY_CLEAR_TASK and FLAG_ACTIVITY_NEW_TASK flag
+            // on the Intent to clear all the activity stack.
+            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 }
 

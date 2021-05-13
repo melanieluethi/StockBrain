@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">StockBrain</string>
+    <string name="stCompanyNameTile">Name:</string>
+    <string name="stCompanyExchangeTile">Exchange:</string>
+    <string name="stCompanyTickerTile">Ticker:</string>
     <string-array name="saCountries">
         <item>Schweiz</item>
         <item>Deutschland</item>

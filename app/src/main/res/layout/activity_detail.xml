@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivDetailCompanyLogo"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintEnd_toStartOf="@+id/glDetailVertical1"
+        app:layout_constraintBottom_toTopOf="@+id/glDetailHorizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/microsoft_logo" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glDetailVertical1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="125dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glDetailVertical2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="200dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glDetailHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="125dp" />
+
+    <TextView
+        android:layout_marginTop = "16dp"
+        android:layout_marginStart = "8dp"
+        android:id="@+id/tvCompanyNameTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stCompanyNameTile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVertical1"
+        />
+    <TextView
+
+        android:layout_marginStart = "8dp"
+        android:id="@+id/tvCompanyTickerTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stCompanyTickerTile"
+        app:layout_constraintTop_toBottomOf="@+id/tvCompanyNameTile"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVertical1"
+        />
+    <TextView
+        android:layout_marginStart = "8dp"
+        android:id="@+id/tvCompanyExchangeTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stCompanyExchangeTile"
+        app:layout_constraintTop_toBottomOf="@+id/tvCompanyTickerTile"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVertical1"
+        />
+
+    <TextView
+        android:layout_marginTop = "16dp"
+        android:layout_marginStart = "8dp"
+        android:id="@+id/tvDetailCompanyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alphabet Inc."
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
+        />
+    <TextView
+        android:layout_marginStart = "8dp"
+        android:id="@+id/tvDetailCompanyTicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GOOG"
+        app:layout_constraintTop_toBottomOf="@+id/tvDetailCompanyName"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
+        />
+    <TextView
+        android:layout_marginStart = "8dp"
+        android:id="@+id/tvDetailCompanyExchange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NASDAQ"
+        app:layout_constraintTop_toBottomOf="@+id/tvDetailCompanyTicker"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
