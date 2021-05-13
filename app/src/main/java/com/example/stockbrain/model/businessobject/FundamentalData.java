@@ -9,11 +9,7 @@ import org.json.JSONObject;
 
 @Table(name = "FundamentalData")
 public class FundamentalData extends Model {
-
-    // This is the unique id given by the server
-    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    public long remoteId;
-    @Column(name = "TickerSymbol", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column(name = "TickerSymbol", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE, onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private String tickerSymbol;
     @Column(name = "Revenue")
     private Double revenue;
@@ -36,16 +32,8 @@ public class FundamentalData extends Model {
         this.liabilities = liabilities;
     }
 
-    public long getRemoteId() {
-        return remoteId;
-    }
-
     public String getTickerSymbol() {
         return tickerSymbol;
-    }
-
-    public void setRemoteId(long remoteId) {
-        this.remoteId = remoteId;
     }
 
     public void setTickerSymbol(String tickerSymbol) {
@@ -90,19 +78,17 @@ public class FundamentalData extends Model {
      */
     @Override
     public String toString() {
-        return this.getTickerSymbol() + " [ID:" + this.getRemoteId() + "]";
+        return this.getTickerSymbol();
     }
 
     public JSONObject toJson(){
         try {
             JSONObject json = new JSONObject();
-            json.put("id", remoteId);
             json.put("TickerSymbol", tickerSymbol);
             json.put("Revenue", revenue);
             json.put("Profit", profit);
             json.put("Assets", assets);
             json.put("Liabilities", liabilities);
-
 
             return json;
         } catch (JSONException e) {

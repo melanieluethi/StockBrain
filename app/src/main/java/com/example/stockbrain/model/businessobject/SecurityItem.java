@@ -1,8 +1,5 @@
 package com.example.stockbrain.model.businessobject;
 
-import android.graphics.Bitmap;
-import android.media.Image;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -10,15 +7,9 @@ import com.activeandroid.annotation.Table;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 @Table(name="SecurityItem")
 public class SecurityItem extends Model {
-
-    // This is the unique id given by the server
-    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    public long remoteId;
-
-    @Column(name = "TickerSymbol", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column(name = "TickerSymbol", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE, onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private String tickerSymbol;
     @Column(name = "Name")
     private String name;
@@ -34,15 +25,6 @@ public class SecurityItem extends Model {
         this.tickerSymbol = tickerSymbol;
         this.name = name;
         this.urlLogo = urlLogo;
-    }
-
-
-    public long getRemoteId() {
-        return remoteId;
-    }
-
-    public void setRemoteId(long remoteId) {
-        this.remoteId = remoteId;
     }
 
     public String getTickerSymbol() {

@@ -13,16 +13,25 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.stockbrain.R;
+import com.example.stockbrain.viewmodel.AllCompanyDetails;
+import com.example.stockbrain.viewmodel.CompanyListAdapter;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity {
+    CompanyListAdapter companyListAdapter = new CompanyListAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        companyListAdapter.createCompany("AAPL");
+        companyListAdapter.createCompany("GOOG");
+        companyListAdapter.createCompany("MSFT");
+        companyListAdapter.createCompany("TSLA");
+        companyListAdapter.createCompany("VOW.DE");
+        companyListAdapter.createCompany("SBUX");
 
         Hashtable <String, String> htCompanies = new Hashtable<String, String>();
         htCompanies.put("USA", "Microsoft,Apple,Google");
@@ -54,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                        // TODO Here should be the tickerSymbol of the choosen element and not the static "GOOG"
+                        AllCompanyDetails allDetails = companyListAdapter.getAllCompanyDetails("GOOG");
 
                         String stCompanyPicked = "You Selected " + String.valueOf(adapterView.getItemAtPosition(position));
 
