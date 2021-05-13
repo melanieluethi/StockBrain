@@ -9,12 +9,8 @@ import org.json.JSONObject;
 
 @Table(name = "FundamentalData")
 public class FundamentalData extends Model {
-
-    // This is the unique id given by the server
-    @Column(name = "remote_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    public long remoteId;
-    @Column(name = "TickerSymbol", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
-    private String FK_tickerSymbol;
+    @Column(name = "TickerSymbol", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE, onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    private String tickerSymbol;
     @Column(name = "Revenue")
     private Double revenue;
     @Column(name = "Profit")
@@ -36,20 +32,12 @@ public class FundamentalData extends Model {
         this.liabilities = liabilities;
     }
 
-    public long getRemoteId() {
-        return remoteId;
+    public String getTickerSymbol() {
+        return tickerSymbol;
     }
 
-    public String getFK_tickerSymbol() {
-        return FK_tickerSymbol;
-    }
-
-    public void setRemoteId(long remoteId) {
-        this.remoteId = remoteId;
-    }
-
-    public void setFK_tickerSymbol(String FK_tickerSymbol) {
-        this.FK_tickerSymbol = FK_tickerSymbol;
+    public void setTickerSymbol(String tickerSymbol) {
+        this.tickerSymbol = tickerSymbol;
     }
 
     public Double getRevenue() {
@@ -90,19 +78,17 @@ public class FundamentalData extends Model {
      */
     @Override
     public String toString() {
-        return this.getFK_tickerSymbol() + " [ID:" + this.getRemoteId() + "]";
+        return this.getTickerSymbol();
     }
 
     public JSONObject toJson(){
         try {
             JSONObject json = new JSONObject();
-            json.put("id", remoteId);
-            json.put("TickerSymbol", FK_tickerSymbol);
+            json.put("TickerSymbol", tickerSymbol);
             json.put("Revenue", revenue);
             json.put("Profit", profit);
             json.put("Assets", assets);
             json.put("Liabilities", liabilities);
-
 
             return json;
         } catch (JSONException e) {

@@ -7,13 +7,16 @@ import androidx.annotation.RequiresApi;
 
 import com.example.stockbrain.model.businessobject.DailyPrice;
 import com.example.stockbrain.model.businessobject.DailyPriceBuilder;
+import com.example.stockbrain.model.businessobject.FundamentalData;
+import com.example.stockbrain.model.businessobject.FundamentalDataBuilder;
 import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.model.businessobject.SecurityItemBuilder;
+import com.example.stockbrain.model.database.DailyPriceRepository;
+import com.example.stockbrain.model.database.FundamentalDataRepository;
 import com.example.stockbrain.model.database.RepositoryProvider;
 import com.example.stockbrain.model.database.SecurityItemRepository;
 import com.example.stockbrain.model.rest.pojo.CompanyLogoPojo;
 import com.example.stockbrain.model.rest.pojo.CompanyPojo;
-import com.example.stockbrain.model.rest.pojo.CompanyStatementsPojo;
 import com.example.stockbrain.model.rest.service.StockBrainService;
 import com.example.stockbrain.model.rest.util.RestConstants;
 import com.example.stockbrain.model.rest.util.RetrofitClientInstance;
@@ -26,10 +29,21 @@ import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyDetailsGetAdapter {
-    private SecurityItemRepository securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
-    private boolean isGettingCompany = false;
-    private boolean isGettingPrices = false;
-    private boolean isGettingStatements = false;
+    private SecurityItemRepository securityItemRepository;
+    private DailyPriceRepository dailyPriceRepository;
+    private FundamentalDataRepository fundamentalDataRepository;
+    private boolean isGettingCompany;
+    private boolean isGettingPrices;
+    private boolean isGettingFundamentalData;
+
+    public CompanyDetailsGetAdapter(){
+        securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
+        dailyPriceRepository = RepositoryProvider.getDailyPriceRepository();
+        fundamentalDataRepository = RepositoryProvider.getFundamentalDataRepository();
+        isGettingCompany = false;
+        isGettingPrices = false;
+        isGettingFundamentalData = false;
+    }
 
     protected void getCompanyGeneral(String ticker) {
         StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
@@ -44,7 +58,7 @@ public class CompanyDetailsGetAdapter {
                             .withTickerSymbol(generalData.get(1).toString())
                             .withItemName(companyName)
                             .build();
-                    securityItemRepository.saveEntity(securityItem);
+                    getLogoUrl(companyName, securityItem);
                     isGettingCompany = true;
                     Log.d("getCompanyGeneral", "Successfully!");
                 } else {
@@ -61,8 +75,7 @@ public class CompanyDetailsGetAdapter {
         });
     }
 
-    protected void getLogoUrl(String ticker, String companyName) {
-        // TODO LUM: Implement Rest to get Company Logo
+    protected void getLogoUrl(String companyName, SecurityItem securityItem) {
         StockBrainService service = RetrofitClientInstance.getLogoRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyLogoPojo>> call = service.getCompanyLogo(companyName);
         call.enqueue(new Callback<List<CompanyLogoPojo>>() {
@@ -70,24 +83,24 @@ public class CompanyDetailsGetAdapter {
             public void onResponse(Call<List<CompanyLogoPojo>> call, Response<List<CompanyLogoPojo>> response) {
                 if (response.isSuccessful()) {
                     if (!response.body().isEmpty()) {
-                        SecurityItem securityItem = new SecurityItemBuilder()
-                                .withTickerSymbol(ticker)
-                                .withItemName(companyName)
-                                .withUrlLogo(response.body().get(0).getLogo())
-                                .build();
+                        String url = response.body().get(0).getLogo();
+                        securityItem.setUrlLogo(url);
                         securityItemRepository.saveEntity(securityItem);
+                        isGettingCompany = true;
                         Log.d("getImage", "Successfully!");
                     } else {
                         String[] s = companyName.split(" ");
-                        getLogoUrl(ticker, s[0]);
+                        getLogoUrl(s[0], securityItem);
                     }
                 } else {
+                    isGettingCompany = false;
                     Log.d("getImage", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyLogoPojo>> call, Throwable t) {
+                isGettingCompany = false;
                 Log.d("getImage", "FAILED");
             }
         });
@@ -103,13 +116,12 @@ public class CompanyDetailsGetAdapter {
                     String[] dataPrices = response.body().get(0).getData().get(0).toString().split(",");
                     Double closingPrice = Double.parseDouble(dataPrices[7]);
                     Double volume = Double.parseDouble(dataPrices[8]);
-                    Log.d("volume", volume.toString());
                     DailyPrice dailyPrice = new DailyPriceBuilder()
                             .withTickerSymbol(dataPrices[1])
                             .withClosingPrice(closingPrice) // "Adj. Close" CORRECT?
                             .withVolume(volume.intValue())
                             .build();
-                    securityItemRepository.saveEntity(dailyPrice);
+                    dailyPriceRepository.saveEntity(dailyPrice);
                     isGettingPrices = true;
                     Log.d("getCompanyPrices", "Successfully");
                 } else {
@@ -126,27 +138,64 @@ public class CompanyDetailsGetAdapter {
         });
     }
 
-    protected void getCompanyStatements(String ticker) {
+    protected void getCompanyFundamentalData(String ticker) {
         StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
-        Call<List<CompanyStatementsPojo>> call = service.getCompanyStatements(ticker, RestConstants.STATEMENT, RestConstants.PERIOD, RestConstants.FYEAR);
-        call.enqueue(new Callback<List<CompanyStatementsPojo>>() {
+        Call<List<CompanyPojo>> call = service.getCompanyStatements(ticker, RestConstants.STATEMENT_BALANCE_SHEET, RestConstants.PERIOD, RestConstants.FYEAR);
+        call.enqueue(new Callback<List<CompanyPojo>>() {
             @Override
-            public void onResponse(Call<List<CompanyStatementsPojo>> call, Response<List<CompanyStatementsPojo>> response) {
+            public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
-                    // TODO LUM: Convert Response in DAO
-                    List<Object> data = response.body().get(0).getData();
-                    String currency = response.body().get(0).getCurrency();
-                    Log.d("getCompanyStatements", "Successfull " + data.get(0).toString() + " " + currency);
+                    String[] dataStatements = response.body().get(0).getData().get(0).toString().split(",");
+                    String tickerSymbol = dataStatements[1];
+                    Double revenue = Double.parseDouble(dataStatements[76]);
+                    Double assets = Double.parseDouble(dataStatements[30]);
+                    Double liabilities = Double.parseDouble(dataStatements[82]);
+                    FundamentalData fundamentalData = new FundamentalDataBuilder()
+                            .withTickerSymbol(tickerSymbol)
+                            .withRevenue(revenue)
+                            .withAssets(assets)
+                            .withLiabilities(liabilities)
+                            .build();
+                    getCompanyFundamentalDataProfit(ticker, fundamentalData);
+                    isGettingFundamentalData = true;
+                    Log.d("getCompanyFundamentalData", "Successfully");
                 } else {
-                    // TODO LUM: Incorrect Response - get old value form database
-                    Log.d("getCompanyStatements", "Response Failed");
+                    isGettingFundamentalData = false;
+                    Log.d("getCompanyFundamentalData", "Response Failed");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CompanyStatementsPojo>> call, Throwable t) {
-                // TODO LUM: What happens if it fails?
-                Log.d("getCompanyStatements", "FAILED");
+            public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
+                isGettingFundamentalData = false;
+                Log.d("getCompanyFundamentalData", "FAILED");
+            }
+        });
+    }
+
+    protected void getCompanyFundamentalDataProfit(String ticker, FundamentalData fundamentalData) {
+        StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
+        Call<List<CompanyPojo>> call = service.getCompanyStatements(ticker, RestConstants.STATEMENT_PROFIT_LOSS, RestConstants.PERIOD, RestConstants.FYEAR);
+        call.enqueue(new Callback<List<CompanyPojo>>() {
+            @Override
+            public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
+                if(response.isSuccessful()) {
+                    String[] dataProfit = response.body().get(0).getData().get(0).toString().split(",");
+                    Double profit = Double.parseDouble(dataProfit[18]);
+                    fundamentalData.setProfit(profit);
+                    fundamentalDataRepository.saveEntity(fundamentalData);
+                    isGettingFundamentalData = true;
+                    Log.d("getCompanyFundamentalDataProfit", "Successfully");
+                } else {
+                    isGettingFundamentalData = false;
+                    Log.d("getCompanyFundamentalDataProfit", "Response Failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
+                isGettingFundamentalData = false;
+                Log.d("getCompanyFundamentalDataProfit", "FAILED");
             }
         });
     }
@@ -167,11 +216,11 @@ public class CompanyDetailsGetAdapter {
         isGettingPrices = gettingPrices;
     }
 
-    public boolean isGettingStatements() {
-        return isGettingStatements;
+    public boolean isGettingFundamentalData() {
+        return isGettingFundamentalData;
     }
 
-    public void setGettingStatements(boolean gettingStatements) {
-        isGettingStatements = gettingStatements;
+    public void setGettingFundamentalData(boolean gettingFundamentalData) {
+        isGettingFundamentalData = gettingFundamentalData;
     }
 }

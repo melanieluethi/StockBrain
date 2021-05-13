@@ -7,8 +7,8 @@ import androidx.annotation.RequiresApi;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class RepositoryProvider {
     private static SecurityItemRepository securityItemRepository;
-    private static SecurityListItemRepository securityListItemRepository;
-    private static SecurityListRepository securityListRepository;
+    private static FundamentalDataRepository fundamentalDataRepository;
+    private static DailyPriceRepository dailyPriceRepository;
 
     public static SecurityItemRepository getSecurityItemRepositoryInstance(){
         if(securityItemRepository == null){
@@ -17,18 +17,17 @@ public class RepositoryProvider {
         return securityItemRepository;
     }
 
-    public static SecurityListItemRepository getSecurityListItemRepositoryInstance(){
-        if(securityListItemRepository == null){
-            securityListItemRepository = new SecurityListItemRepository();
+    public static FundamentalDataRepository getFundamentalDataRepository() {
+        if(fundamentalDataRepository == null){
+            fundamentalDataRepository = new FundamentalDataRepository();
         }
-        return securityListItemRepository;
+        return fundamentalDataRepository;
     }
 
-
-    public static SecurityListRepository getSecurityListRepositoryInstance(){
-        if(securityListRepository == null){
-            securityListRepository = new SecurityListRepository();
+    public static DailyPriceRepository getDailyPriceRepository() {
+        if(dailyPriceRepository == null){
+            dailyPriceRepository = new DailyPriceRepository();
         }
-        return securityListRepository;
+        return dailyPriceRepository;
     }
 }
