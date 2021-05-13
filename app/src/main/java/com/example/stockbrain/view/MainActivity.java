@@ -36,16 +36,16 @@ public class MainActivity extends AppCompatActivity {
         spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> Companies = new ArrayList<String>();
+                ArrayList<String> alCompanies = new ArrayList<String>();
                 String text = spCountry.getSelectedItem().toString();
                 for (String company : htCompanies.get(text).split(",")) {
-                    Companies.add(company);
+                    alCompanies.add(company);
                 }
 
-                String[] stCompanies = new String[Companies.size()];
-                stCompanies = Companies.toArray(stCompanies);
+                String[] saCompanies = new String[alCompanies.size()];
+                saCompanies = alCompanies.toArray(saCompanies);
 
-                ListAdapter theAdapter = new listViewAdapter(MainActivity.this, stCompanies);
+                ListAdapter theAdapter = new listViewAdapter(MainActivity.this, saCompanies);
 
                 ListView listView = (ListView) findViewById(R.id.lvCompanies);
 
