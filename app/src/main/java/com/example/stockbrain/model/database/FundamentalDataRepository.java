@@ -11,6 +11,7 @@ public class FundamentalDataRepository extends AbstractRepository {
         return new Select().from(FundamentalData.class).execute();
     }
 
+    @Override
     public FundamentalData getByTicker(String ticker) {
         return new Select().from(FundamentalData.class).where("TickerSymbol=?", new Object[]{ticker}).executeSingle();
     }

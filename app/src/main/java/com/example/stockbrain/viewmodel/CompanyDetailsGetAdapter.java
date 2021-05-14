@@ -121,7 +121,7 @@ public class CompanyDetailsGetAdapter {
                     Double volume = Double.parseDouble(dataPrices[8]);
                     DailyPrice dailyPrice = new DailyPriceBuilder()
                             .withTickerSymbol(dataPrices[1])
-                            .withClosingPrice(closingPrice) // "Adj. Close" CORRECT?
+                            .withClosingPrice(closingPrice)
                             .withVolume(volume.intValue())
                             .build();
                     dailyPriceRepository.saveEntity(dailyPrice);

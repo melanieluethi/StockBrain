@@ -18,15 +18,7 @@ public class SecurityItemRepository extends AbstractRepository {
      * Returns only one security item with provided id.
      * Returns null if tupel with given id does not exist
      */
-    public SecurityItem getSecurityItemById(long id){
-        return (SecurityItem) super.getById(SecurityItem.class, id);
-    }
-
     public SecurityItem getByTicker(String ticker) {
         return new Select().from(SecurityItem.class).where("TickerSymbol=?", new Object[]{ticker}).executeSingle();
-    }
-
-    public SecurityItem getByName(String name) {
-        return new Select().from(SecurityItem.class).where("itemName=?", new Object[]{name}).executeSingle();
     }
 }

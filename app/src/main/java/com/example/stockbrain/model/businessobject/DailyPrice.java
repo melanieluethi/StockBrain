@@ -4,9 +4,6 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 @Table(name="DailyPrice")
 public class DailyPrice extends Model {
     @Column(name = "TickerSymbol", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE, onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
@@ -18,13 +15,6 @@ public class DailyPrice extends Model {
 
     public DailyPrice(){
         super();
-
-    }
-    public DailyPrice(Double closingPrice, Integer volume){
-        super();
-        this.closingPrice = closingPrice;
-        this.volume = volume;
-
     }
 
     public String getTickerSymbol() {
@@ -49,27 +39,5 @@ public class DailyPrice extends Model {
 
     public void setVolume(Integer volume) {
         this.volume = volume;
-    }
-
-    /**
-     * To access that primary key Id, you can call getId() on an instance of your model.
-     * @return
-     */
-    @Override
-    public String toString() {
-        return this.getTickerSymbol();
-    }
-
-    public JSONObject toJson(){
-        try {
-            JSONObject json = new JSONObject();
-            json.put("TickerSymbol", tickerSymbol);
-            json.put("Closing Price", closingPrice);
-            json.put("Volume", volume);
-
-            return json;
-        } catch (JSONException e) {
-            return null;
-        }
     }
 }

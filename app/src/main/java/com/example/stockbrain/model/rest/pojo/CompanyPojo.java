@@ -1,7 +1,5 @@
 package com.example.stockbrain.model.rest.pojo;
 
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

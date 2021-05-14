@@ -4,9 +4,6 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 @Table(name = "FundamentalData")
 public class FundamentalData extends Model {
     @Column(name = "TickerSymbol", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE, onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
@@ -70,29 +67,5 @@ public class FundamentalData extends Model {
 
     public void setLiabilities(Double liabilities) {
         this.liabilities = liabilities;
-    }
-
-    /**
-     * To access that primary key Id, you can call getId() on an instance of your model.
-     * @return
-     */
-    @Override
-    public String toString() {
-        return this.getTickerSymbol();
-    }
-
-    public JSONObject toJson(){
-        try {
-            JSONObject json = new JSONObject();
-            json.put("TickerSymbol", tickerSymbol);
-            json.put("Revenue", revenue);
-            json.put("Profit", profit);
-            json.put("Assets", assets);
-            json.put("Liabilities", liabilities);
-
-            return json;
-        } catch (JSONException e) {
-            return null;
-        }
     }
 }

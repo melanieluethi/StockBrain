@@ -20,7 +20,6 @@ public class DetailActivity extends AppCompatActivity {
 
         tvDetailCompanyName = findViewById(R.id.tvDetailCompanyName);
         tvDetailCompanyTicker = findViewById(R.id.tvDetailCompanyTicker);
-        tvDetailCompanyExchange = findViewById(R.id.tvDetailCompanyExchange);
 
         if (getIntent().hasExtra("COMPANY_NAME") && getIntent().hasExtra("TICKER")) {
             // Get data

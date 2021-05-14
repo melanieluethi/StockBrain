@@ -50,27 +50,4 @@ public class SecurityItem extends Model {
     public void setUrlLogo(String urlLogo) {
         this.urlLogo = urlLogo;
     }
-
-    /**
-     * To access that primary key Id, you can call getId() on an instance of your model.
-     * @return
-     */
-    @Override
-    public String toString() {
-        return this.getName() + " [ID:" + this.getId() +"," +  this.getName()  + "]";
-    }
-
-    public JSONObject toJson(){
-        try {
-            JSONObject json = new JSONObject();
-            json.put("id", getId());
-            json.put("TickerSymbol", tickerSymbol);
-            json.put("Name", name);
-            json.put("Logo", urlLogo);
-
-            return json;
-        } catch (JSONException e) {
-            return null;
-        }
-    }
 }
