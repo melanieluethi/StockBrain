@@ -73,12 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        /**
-         * Referenz auf die Datenbank (Sollte in derjenigen Methode sein, wo der Button "show Data" aufgerufen wird)
-         */
-        // StockBrainDatabaseHelper stockBrainDatabaseHelper = new StockBrainDatabaseHelper(MainActivity.this);
-
     }
 
     public void sendData(View view, String stCompanyPicked, String stTicker) {
@@ -106,4 +100,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-

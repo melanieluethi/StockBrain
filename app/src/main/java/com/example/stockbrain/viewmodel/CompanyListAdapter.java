@@ -15,8 +15,8 @@ import com.example.stockbrain.model.database.SecurityItemRepository;
 
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyListAdapter extends BaseObservable implements ListItemInteractionInterface {
-
     public void createCompany(String ticker) {
         SecurityItem securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
         if (securityItem == null) {
@@ -43,7 +43,6 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
         dailyPriceRepository.deleteEntity(dailyPrice);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<SecurityItem> getCompanyList() {
         return RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems();
     }
@@ -54,7 +53,6 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
         return allCompanyDetails.getAllCompanyDetails(ticker);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getCompanyDetails(String ticker) {
         CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
         companyDetailsGetAdapter.getCompanyPrices(ticker);
