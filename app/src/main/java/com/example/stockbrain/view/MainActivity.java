@@ -57,20 +57,16 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                // TODO Here should be the tickerSymbol of the choosen element and not the static "GOOG"
-                AllCompanyDetails allDetails = companyListAdapter.getAllCompanyDetails("GOOG");
-
                 String stCompanyPicked = String.valueOf(adapterView.getItemAtPosition(position));
 
                 htCompanies.entrySet().forEach(v -> {
-                    System.out.println("Went to if");
                     if(v.getValue().equals(stCompanyPicked)){
-                        System.out.println("Found Company");
                         stTicker = v.getKey();
                         return;
                     }
                 });
-                System.out.println(stTicker);
+
+                AllCompanyDetails allDetails = companyListAdapter.getAllCompanyDetails(stTicker);
                 //Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
 
                 sendData(view, stCompanyPicked, stTicker);
