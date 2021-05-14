@@ -117,8 +117,12 @@ public class CompanyDetailsGetAdapter {
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
                     String[] dataPrices = response.body().get(0).getData().get(0).toString().split(",");
-                    Double closingPrice = Double.parseDouble(dataPrices[7]);
-                    Double volume = Double.parseDouble(dataPrices[8]);
+                    Double closingPrice = 0.0;
+                    Double volume = 0.0;
+                    if(!dataPrices[7].contains("null"))
+                        closingPrice = Double.parseDouble(dataPrices[7]);
+                    if(!dataPrices[8].contains("null"))
+                        volume = Double.parseDouble(dataPrices[8]);
                     DailyPrice dailyPrice = new DailyPriceBuilder()
                             .withTickerSymbol(dataPrices[1])
                             .withClosingPrice(closingPrice)
@@ -150,9 +154,15 @@ public class CompanyDetailsGetAdapter {
                 if(response.isSuccessful()) {
                     String[] dataStatements = response.body().get(0).getData().get(0).toString().split(",");
                     String tickerSymbol = dataStatements[1];
-                    Double revenue = Double.parseDouble(dataStatements[76]);
-                    Double assets = Double.parseDouble(dataStatements[30]);
-                    Double liabilities = Double.parseDouble(dataStatements[82]);
+                    Double revenue = 0.0;
+                    Double assets = 0.0;
+                    Double liabilities = 0.0;
+                    if (!dataStatements[76].contains("null"))
+                        revenue = Double.parseDouble(dataStatements[76]);
+                    if (!dataStatements[30].contains("null"))
+                        assets = Double.parseDouble(dataStatements[30]);
+                    if (!dataStatements[82].contains("null"))
+                        liabilities = Double.parseDouble(dataStatements[82]);
                     FundamentalData fundamentalData = new FundamentalDataBuilder()
                             .withTickerSymbol(tickerSymbol)
                             .withRevenue(revenue)
@@ -184,7 +194,9 @@ public class CompanyDetailsGetAdapter {
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
                     String[] dataProfit = response.body().get(0).getData().get(0).toString().split(",");
-                    Double profit = Double.parseDouble(dataProfit[18]);
+                    Double profit = 0.0;
+                    if (!dataProfit[18].equals("null"))
+                        profit = Double.parseDouble(dataProfit[18]);
                     fundamentalData.setProfit(profit);
                     fundamentalDataRepository.saveEntity(fundamentalData);
                     isGettingFundamentalData = true;
