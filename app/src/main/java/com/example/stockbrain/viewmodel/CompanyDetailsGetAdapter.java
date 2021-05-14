@@ -51,13 +51,16 @@ public class CompanyDetailsGetAdapter {
         call.enqueue(new Callback<List<CompanyPojo>>() {
             @Override
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
-                if(response.isSuccessful()) {
+                if(response.isSuccessful() && response.body().get(0).isFound()) {
                     List<Object> generalData = response.body().get(0).getData();
                     String companyName = generalData.get(2).toString();
                     SecurityItem securityItem = new SecurityItemBuilder()
                             .withTickerSymbol(generalData.get(1).toString())
                             .withItemName(companyName)
                             .build();
+                    if (companyName.equals("APPLE INC")) {
+                        companyName = "Apple";
+                    }
                     getLogoUrl(companyName, securityItem);
                     isGettingCompany = true;
                     Log.d("getCompanyGeneral", "Successfully!");

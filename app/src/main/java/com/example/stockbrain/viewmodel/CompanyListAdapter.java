@@ -18,8 +18,11 @@ import java.util.List;
 public class CompanyListAdapter extends BaseObservable implements ListItemInteractionInterface {
 
     public void createCompany(String ticker) {
-        CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
-        companyDetailsGetAdapter.getCompanyGeneral(ticker);
+        SecurityItem securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
+        if (securityItem == null) {
+            CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
+            companyDetailsGetAdapter.getCompanyGeneral(ticker);
+        }
     }
 
     @Override
