@@ -61,16 +61,6 @@
         />
 
     <TextView
-        android:layout_marginStart = "8dp"
-        android:id="@+id/tvCompanyExchangeTile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stCompanyExchangeTile"
-        app:layout_constraintTop_toBottomOf="@+id/tvCompanyTickerTile"
-        app:layout_constraintStart_toEndOf="@+id/glDetailVertical1"
-        />
-
-    <TextView
         android:layout_marginTop = "16dp"
         android:layout_marginStart = "8dp"
         android:id="@+id/tvDetailCompanyName"
@@ -89,13 +79,5 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDetailCompanyName"
         app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
         />
-    <TextView
-        android:layout_marginStart = "8dp"
-        android:id="@+id/tvDetailCompanyExchange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NASDAQ"
-        app:layout_constraintTop_toBottomOf="@+id/tvDetailCompanyTicker"
-        app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
-        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
