@@ -2,21 +2,21 @@ package com.example.stockbrain.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.stockbrain.R;
+import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.viewmodel.AllCompanyDetails;
 import com.example.stockbrain.viewmodel.CompanyListAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +24,8 @@ import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity {
     CompanyListAdapter companyListAdapter = new CompanyListAdapter();
+
+    String stTicker = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,51 +38,43 @@ public class MainActivity extends AppCompatActivity {
         companyListAdapter.createCompany("VOW.DE");
         companyListAdapter.createCompany("SBUX");
 
-        Hashtable <String, String> htCompanies = new Hashtable<String, String>();
-        htCompanies.put("USA", "Microsoft,Apple,Google");
-        htCompanies.put("Schweiz", "Nestle,Novartis,Roche");
-        htCompanies.put("UK", "HSBC");
-        htCompanies.put("Deutschland", "Rheinmetall,Deutsche Bank");
+        Hashtable <String, String> htCompanies = new Hashtable<>();
+        for (SecurityItem si : companyListAdapter.getCompanyList()){
+            htCompanies.put(si.getTickerSymbol(), si.getName());
+        }
 
-        Spinner spCountry = findViewById(R.id.spCountry);
+        FloatingActionButton fbAddNewCompany = findViewById(R.id.fbAddNewCompany);
 
+        String[] saCompanies = new String[htCompanies.size()];
+        saCompanies = htCompanies.values().toArray(saCompanies);
 
-        spCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ListAdapter theAdapter = new listViewAdapter(MainActivity.this, saCompanies);
+
+        ListView listView = findViewById(R.id.lvCompanies);
+
+        listView.setAdapter(theAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayList<String> alCompanies = new ArrayList<String>();
-                String text = spCountry.getSelectedItem().toString();
-                Collections.addAll(alCompanies, htCompanies.get(text).split(","));
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // TODO Here should be the tickerSymbol of the choosen element and not the static "GOOG"
+                AllCompanyDetails allDetails = companyListAdapter.getAllCompanyDetails("GOOG");
 
-                String[] saCompanies = new String[alCompanies.size()];
-                saCompanies = alCompanies.toArray(saCompanies);
+                String stCompanyPicked = String.valueOf(adapterView.getItemAtPosition(position));
 
-                ListAdapter theAdapter = new listViewAdapter(MainActivity.this, saCompanies);
-
-                ListView listView = findViewById(R.id.lvCompanies);
-
-                listView.setAdapter(theAdapter);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                        // TODO Here should be the tickerSymbol of the choosen element and not the static "GOOG"
-                        AllCompanyDetails allDetails = companyListAdapter.getAllCompanyDetails("GOOG");
-
-                        String stCompanyPicked = String.valueOf(adapterView.getItemAtPosition(position));
-                        String stCountry = spCountry.getSelectedItem().toString();
-                        //Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
-
-                        sendData(view, stCompanyPicked, stCountry);
-
+                htCompanies.entrySet().forEach(v -> {
+                    System.out.println("Went to if");
+                    if(v.getValue().equals(stCompanyPicked)){
+                        System.out.println("Found Company");
+                        stTicker = v.getKey();
+                        return;
                     }
                 });
-            }
+                System.out.println(stTicker);
+                //Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                sendData(view, stCompanyPicked, stTicker);
 
-                // sometimes you need nothing here
             }
         });
 
@@ -91,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void sendData(View view, String stCompanyPicked, String stCountry) {
+    public void sendData(View view, String stCompanyPicked, String stTicker) {
         // Define Intent
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
 
@@ -102,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Pass Data
         intent.putExtra("COMPANY_NAME", stCompanyPicked);
-        intent.putExtra("COUNTRY", stCountry);
+        intent.putExtra("TICKER", stTicker);
 
         // Check for empty name
         if (TextUtils.isEmpty(stCompanyPicked)) {

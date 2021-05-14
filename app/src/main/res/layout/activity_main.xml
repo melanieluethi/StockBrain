@@ -1,35 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    >
-
-    <Spinner
-        android:id="@+id/spCountry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:entries="@array/saCountries"
-        />
+    android:padding="16dp">
 
     <ListView
         android:id="@+id/lvCompanies"
-        android:layout_width="363dp"
-        android:layout_height="653dp"
-        android:layout_alignTop="@id/spCountry"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spCountry" />
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fbAddNewCompany"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/stAddNewCompany"
+
+        app:layout_constraintStart_toStartOf="@+id/glMainVertical"
+        app:layout_constraintTop_toTopOf="@+id/glMainHorizontal"
+        android:src="@drawable/ic_baseline_add_24"
+
+        app:fabCustomSize="64dp"
+        app:maxImageSize="56dp"
+
+        app:backgroundTint="@color/white"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glMainHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glMainVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

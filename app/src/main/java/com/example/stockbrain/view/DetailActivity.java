@@ -11,7 +11,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private TextView tvDetailCompanyName, tvDetailCompanyTicker, tvDetailCompanyExchange;
 
-    String stCompanyName, stCountry, stExchange;
+    String stCompanyName, stTicker, stExchange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -22,33 +22,14 @@ public class DetailActivity extends AppCompatActivity {
         tvDetailCompanyTicker = findViewById(R.id.tvDetailCompanyTicker);
         tvDetailCompanyExchange = findViewById(R.id.tvDetailCompanyExchange);
 
-        if (getIntent().hasExtra("COMPANY_NAME") && getIntent().hasExtra("COUNTRY")) {
+        if (getIntent().hasExtra("COMPANY_NAME") && getIntent().hasExtra("TICKER")) {
             // Get data
             stCompanyName = getIntent().getStringExtra("COMPANY_NAME");
-            stCountry = getIntent().getStringExtra("COUNTRY");
-
-            switch (stCountry) {
-                case "Schweiz": {
-                    stExchange = "SWIX";
-                    break;
-                }
-                case "Deutschland": {
-                    stExchange = "XFRA";
-                    break;
-                }
-                case "UK": {
-                    stExchange = "LSE";
-                    break;
-                }
-                case "USA": {
-                    stExchange = "NASDAQ";
-                    break;
-                }
-            }
+            stTicker = getIntent().getStringExtra("TICKER");
         }
 
         tvDetailCompanyName.setText(stCompanyName);
-        tvDetailCompanyExchange.setText(stExchange);
+        tvDetailCompanyTicker.setText(stTicker);
     }
 
 }

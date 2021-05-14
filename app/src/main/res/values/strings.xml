@@ -3,6 +3,7 @@
     <string name="stCompanyNameTile">Name:</string>
     <string name="stCompanyExchangeTile">Exchange:</string>
     <string name="stCompanyTickerTile">Ticker:</string>
+    <string name="stAddNewCompany">Add new company</string>
     <string-array name="saCountries">
         <item>Schweiz</item>
         <item>Deutschland</item>
