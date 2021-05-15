@@ -6,25 +6,53 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/glDetailVertical1"
+        android:id="@+id/glDetailVerticalLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="100dp" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/glDetailVertical2"
+        android:id="@+id/glDetailHorizontalLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="100dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glDetailVerticalNameTicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/glDetailHorizontal"
+        android:id="@+id/glDetailVerticalBaseInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.175" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glDetailVerticalCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.42" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glDetailVerticalDailyInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glDetailHorizontalInfoSection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="100dp" />
+        app:layout_constraintGuide_begin="146dp" />
 
     <ImageView
         android:id="@+id/ivDetailCompanyLogo"
@@ -33,8 +61,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
 
-        app:layout_constraintEnd_toStartOf="@+id/glDetailVertical1"
-        app:layout_constraintBottom_toTopOf="@+id/glDetailHorizontal"
+        app:layout_constraintEnd_toStartOf="@+id/glDetailVerticalLogo"
+        app:layout_constraintBottom_toTopOf="@+id/glDetailHorizontalLogo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/microsoft_logo" />
@@ -47,7 +75,7 @@
         android:layout_height="wrap_content"
         android:text="@string/stCompanyNameTile"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/glDetailVertical1"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVerticalLogo"
         android:textSize="24dp"
         />
 
@@ -58,7 +86,7 @@
         android:layout_height="wrap_content"
         android:text="@string/stCompanyTickerTile"
         app:layout_constraintTop_toBottomOf="@+id/tvCompanyNameTile"
-        app:layout_constraintStart_toEndOf="@+id/glDetailVertical1"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVerticalLogo"
         android:textSize="24dp"
         />
 
@@ -70,7 +98,7 @@
         android:layout_height="wrap_content"
         android:text="Alphabet Inc."
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVerticalNameTicker"
         android:textSize="24dp"
         android:textColor="@color/black"
         />
@@ -81,9 +109,163 @@
         android:layout_height="wrap_content"
         android:text="GOOG"
         app:layout_constraintTop_toBottomOf="@+id/tvDetailCompanyName"
-        app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
+        app:layout_constraintStart_toEndOf="@+id/glDetailVerticalNameTicker"
         android:textSize="24dp"
         android:textColor="@color/black"
         />
+
+    <TextView
+        android:id="@+id/tvAssetsTile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/glDetailHorizontalInfoSection"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalBaseInfo"
+        android:text = "@string/stAssetsTile"
+        />
+    <TextView
+        android:id="@+id/tvLiabilitiesTile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAssetsTile"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalBaseInfo"
+        android:text = "@string/stLiabilitiesTile"
+        />
+    <TextView
+        android:id="@+id/tvProfitTile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLiabilitiesTile"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalBaseInfo"
+        android:text = "@string/stProfitTile"
+        />
+    <TextView
+        android:id="@+id/tvRevenueTile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvProfitTile"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalBaseInfo"
+        android:text = "@string/stRevenueTile"
+        />
+
+    <TextView
+        android:id="@+id/tvAssets"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/glDetailVerticalBaseInfo"
+        app:layout_constraintTop_toBottomOf="@id/glDetailHorizontalInfoSection"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalCenter"
+        android:textColor="@color/black"
+        android:hint="Assets"
+        android:textAlignment="textEnd"
+        />
+    <TextView
+        android:id="@+id/tvLiabilities"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/glDetailVerticalBaseInfo"
+        app:layout_constraintTop_toBottomOf="@id/tvAssets"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalCenter"
+        android:textColor="@color/black"
+        android:hint="Liabilities"
+        android:textAlignment="textEnd"
+        />
+    <TextView
+        android:id="@+id/tvProfit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/glDetailVerticalBaseInfo"
+        app:layout_constraintTop_toBottomOf="@id/tvLiabilities"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalCenter"
+        android:textColor="@color/black"
+        android:hint="Profit"
+        android:textAlignment="textEnd"
+        />
+
+    <TextView
+        android:id="@+id/tvRevenue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/glDetailVerticalBaseInfo"
+        app:layout_constraintTop_toBottomOf="@id/tvProfit"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalCenter"
+        android:textColor="@color/black"
+        android:hint="Revenue"
+        android:textAlignment="textEnd"
+        />
+
+    <TextView
+        android:id="@+id/tvVolumeTile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="@id/glDetailVerticalCenter"
+        app:layout_constraintTop_toBottomOf="@id/glDetailHorizontalInfoSection"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalDailyInfo"
+        android:text = "@string/stVolumeTile"
+        />
+    <TextView
+        android:id="@+id/tvClosingPriceTile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+
+        app:layout_constraintStart_toStartOf="@id/glDetailVerticalCenter"
+        app:layout_constraintTop_toBottomOf="@id/tvVolumeTile"
+        app:layout_constraintEnd_toStartOf="@id/glDetailVerticalDailyInfo"
+        android:text = "@string/stClosingPriceTile"
+        />
+
+    <TextView
+        android:id="@+id/tvVolume"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/glDetailVerticalDailyInfo"
+        app:layout_constraintTop_toBottomOf="@id/glDetailHorizontalInfoSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/black"
+        android:hint="Traded Volume"
+        android:textAlignment="textEnd"
+        />
+    <TextView
+        android:id="@+id/tvClosingPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/glDetailVerticalDailyInfo"
+        app:layout_constraintTop_toBottomOf="@id/tvVolume"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/black"
+        android:hint="Liabilities"
+        android:textAlignment="textEnd"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

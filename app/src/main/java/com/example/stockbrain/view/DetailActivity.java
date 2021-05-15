@@ -9,11 +9,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.stockbrain.R;
 import com.example.stockbrain.model.businessobject.SecurityItem;
+import com.example.stockbrain.viewmodel.AllCompanyDetails;
 import com.example.stockbrain.viewmodel.CompanyListAdapter;
 
 public class DetailActivity extends AppCompatActivity {
 
     private TextView tvDetailCompanyName, tvDetailCompanyTicker;
+    private TextView tvAssets, tvLiabilities, tvProfit, tvRevenue, tvVolume, tvClosingPrice;
     private ImageView ivDetailCompanyLogo;
 
     String stCompanyName, stTicker;
@@ -27,6 +29,12 @@ public class DetailActivity extends AppCompatActivity {
         tvDetailCompanyName = findViewById(R.id.tvDetailCompanyName);
         tvDetailCompanyTicker = findViewById(R.id.tvDetailCompanyTicker);
         ivDetailCompanyLogo = findViewById(R.id.ivDetailCompanyLogo);
+        tvAssets = findViewById(R.id.tvAssets);
+        tvLiabilities = findViewById(R.id.tvLiabilities);
+        tvProfit = findViewById(R.id.tvProfit);
+        tvRevenue = findViewById(R.id.tvRevenue);
+        tvVolume = findViewById(R.id.tvVolume);
+        tvClosingPrice = findViewById(R.id.tvClosingPrice);
 
         if (getIntent().hasExtra("COMPANY_NAME") && getIntent().hasExtra("TICKER")) {
             // Get data
@@ -40,11 +48,15 @@ public class DetailActivity extends AppCompatActivity {
                 stImageURL = si.getUrlLogo();
             }
         }
+        AllCompanyDetails allCompanyDetails = companyListAdapter.getAllCompanyDetails(stTicker);
 
         Glide.with(DetailActivity.this).load(stImageURL).into(ivDetailCompanyLogo);
 
         tvDetailCompanyName.setText(stCompanyName);
         tvDetailCompanyTicker.setText(stTicker);
+
+        //System.out.println(allCompanyDetails.getAllCompanyDetails(stTicker));
+
     }
 
 }
