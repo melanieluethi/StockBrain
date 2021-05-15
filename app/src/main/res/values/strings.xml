@@ -4,26 +4,12 @@
     <string name="stCompanyExchangeTile">Exchange:</string>
     <string name="stCompanyTickerTile">Ticker:</string>
     <string name="stAddNewCompany">Add new company</string>
+    <string name="stAddNewCompanyHint">Please enter Ticker Symbol</string>
     <string name="stAssetsTile">Assets</string>
     <string name="stLiabilitiesTile">Liabilities</string>
     <string name="stProfitTile">Profit</string>
     <string name="stRevenueTile">Revenue</string>
     <string name="stVolumeTile">Traded Volume</string>
     <string name="stClosingPriceTile">Closing Price</string>
-    <string-array name="saCountries">
-        <item>Schweiz</item>
-        <item>Deutschland</item>
-        <item>UK</item>
-        <item>USA</item>
-    </string-array>
-    <string-array name="saCompanyNames">
-        <item>Microsoft</item>
-        <item>Google</item>
-        <item>Apple</item>
-        <item>Nestle</item>
-        <item>Novartis</item>
-        <item>Roche</item>
-    </string-array>
-
 
 </resources>
