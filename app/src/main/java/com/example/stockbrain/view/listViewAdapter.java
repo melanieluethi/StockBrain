@@ -8,9 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.stockbrain.R;
+import com.example.stockbrain.model.businessobject.SecurityItem;
+import com.example.stockbrain.viewmodel.CompanyListAdapter;
+import com.squareup.picasso.Picasso;
 
 public class listViewAdapter extends ArrayAdapter<String>  {
+
+    CompanyListAdapter companyListAdapter = new CompanyListAdapter();
 
     public listViewAdapter(Context context, String[] values) {
         super(context,
@@ -25,15 +31,22 @@ public class listViewAdapter extends ArrayAdapter<String>  {
 
         View theView = inflater.inflate(R.layout.row_layout_2, parent, false);
 
-        String tvShows = getItem(position);
+        String stCompany = getItem(position);
 
         TextView textView = (TextView) theView.findViewById(R.id.textView1);
 
-        textView.setText(tvShows);
+        textView.setText(stCompany);
 
         ImageView imageView = (ImageView) theView.findViewById(R.id.imageView1);
+        String stImageURL = "";
 
-        imageView.setImageResource(R.drawable.microsoft_logo);
+        for (SecurityItem si : companyListAdapter.getCompanyList()){
+            if (si.getName().equals(stCompany)) {
+                stImageURL = si.getUrlLogo();
+            }
+        }
+
+        Glide.with(getContext()).load(stImageURL).into(imageView);
 
         return theView;
     }

@@ -10,21 +10,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="125dp" />
+        app:layout_constraintGuide_begin="100dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glDetailVertical2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glDetailHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="125dp" />
+        app:layout_constraintGuide_begin="100dp" />
 
     <ImageView
         android:id="@+id/ivDetailCompanyLogo"
@@ -48,6 +48,7 @@
         android:text="@string/stCompanyNameTile"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/glDetailVertical1"
+        android:textSize="24dp"
         />
 
     <TextView
@@ -58,6 +59,7 @@
         android:text="@string/stCompanyTickerTile"
         app:layout_constraintTop_toBottomOf="@+id/tvCompanyNameTile"
         app:layout_constraintStart_toEndOf="@+id/glDetailVertical1"
+        android:textSize="24dp"
         />
 
     <TextView
@@ -69,6 +71,8 @@
         android:text="Alphabet Inc."
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
+        android:textSize="24dp"
+        android:textColor="@color/black"
         />
     <TextView
         android:layout_marginStart = "8dp"
@@ -78,6 +82,8 @@
         android:text="GOOG"
         app:layout_constraintTop_toBottomOf="@+id/tvDetailCompanyName"
         app:layout_constraintStart_toEndOf="@+id/glDetailVertical2"
+        android:textSize="24dp"
+        android:textColor="@color/black"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
