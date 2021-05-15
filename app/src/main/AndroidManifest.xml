@@ -27,7 +27,6 @@
             android:exported="false">
         </provider>
         <activity android:name=".view.DetailActivity" />
-        <activity android:name=".view.AddCompanyActivity" />
         <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
