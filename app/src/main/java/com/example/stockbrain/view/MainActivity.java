@@ -2,6 +2,8 @@ package com.example.stockbrain.view;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.ObservableArrayList;
+import androidx.databinding.ObservableList;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,13 +24,18 @@ import com.example.stockbrain.viewmodel.CompanyListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
+
+import static java.lang.Thread.*;
 
 public class MainActivity extends AppCompatActivity {
     CompanyListAdapter companyListAdapter = new CompanyListAdapter();
     ListView listView;
     String stTicker = "";
     String stAddNewCompanyTicker = "";
+    ObservableArrayList<SecurityItem> oaCompanyList = companyListAdapter.getCompanyList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +48,78 @@ public class MainActivity extends AppCompatActivity {
         companyListAdapter.createCompany("VOW.DE");
         companyListAdapter.createCompany("SBUX");
 
-        Hashtable <String, String> htCompanies = new Hashtable<>();
-        for (SecurityItem si : companyListAdapter.getCompanyList()){
-            htCompanies.put(si.getTickerSymbol(), si.getName());
-        }
+        oaCompanyList.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<SecurityItem>>() {
+            @Override
+            public void onChanged(ObservableList<SecurityItem> sender) {
+                System.out.println("onChanged ausgeführt");
+                buildList();
+            }
+
+            @Override
+            public void onItemRangeChanged(ObservableList<SecurityItem> sender, int positionStart, int itemCount) {
+                System.out.println("onItemRangeChanged ausgeführt");
+                buildList();
+            }
+
+            @Override
+            public void onItemRangeInserted(ObservableList<SecurityItem> sender, int positionStart, int itemCount) {
+                //do nothing
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList<SecurityItem> sender, int fromPosition, int toPosition, int itemCount) {
+                System.out.println("onItemRangeMoved ausgeführt");
+                buildList();
+            }
+
+            @Override
+            public void onItemRangeRemoved(ObservableList<SecurityItem> sender, int positionStart, int itemCount) {
+                System.out.println("onItemRangeRemoved ausgeführt");
+                buildList();
+            }
+        });
 
         FloatingActionButton fbAddNewCompany = findViewById(R.id.fbAddNewCompany);
+        fbAddNewCompany.setOnClickListener(e -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Add New Company");
 
+            View viewInflated = LayoutInflater.from(this).inflate(R.layout.activity_addnewcompany, (ViewGroup) listView, false);
+
+            final TextInputLayout input = (TextInputLayout) viewInflated.findViewById(R.id.tiAddNewCompany);
+
+            builder.setView(viewInflated);
+
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    stAddNewCompanyTicker = input.getEditText().getText().toString();
+                    if (!(stAddNewCompanyTicker.equals(""))){
+                        companyListAdapter.createCompany(stAddNewCompanyTicker);
+                        buildList();
+                        Toast.makeText(MainActivity.this, "Added Company " + stAddNewCompanyTicker, Toast.LENGTH_LONG);
+                    }
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        });
+    }
+
+    public void buildList () {
+        Hashtable <String, String> htCompanies = new Hashtable<>();
+        System.out.println("buildList");
+        for (SecurityItem si : oaCompanyList){
+            htCompanies.put(si.getTickerSymbol(), si.getName());
+        }
+        System.out.println("buildList2");
         String[] saCompanies = new String[htCompanies.size()];
         saCompanies = htCompanies.values().toArray(saCompanies);
 
@@ -76,66 +148,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        fbAddNewCompany.setOnClickListener(e -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Add New Company");
-            // I'm using fragment here so I'm using getView() to provide ViewGroup
-            // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-            View viewInflated = LayoutInflater.from(this).inflate(R.layout.activity_addnewcompany, (ViewGroup) listView, false);
-            // Set up the input
-            final TextInputLayout input = (TextInputLayout) viewInflated.findViewById(R.id.tiAddNewCompany);
-            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-            builder.setView(viewInflated);
-
-            // Set up the buttons
-            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    stAddNewCompanyTicker = input.getEditText().getText().toString();
-                    System.out.println("New Ticker:" + stAddNewCompanyTicker);
-                    System.out.println(stAddNewCompanyTicker);
-                    if (!(stAddNewCompanyTicker.equals(""))){
-                        System.out.println("New Ticker:" + stAddNewCompanyTicker);
-                        companyListAdapter.createCompany(stAddNewCompanyTicker);
-                        rebuildList();
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                System.out.println("Long clicked");
+                String stCompanyPicked = String.valueOf(adapterView.getItemAtPosition(position));
+                System.out.println("Selected: " + stCompanyPicked);
+                htCompanies.entrySet().forEach(v -> {
+                    if(v.getValue().equals(stCompanyPicked)){
+                        stTicker = v.getKey();
+                        return;
                     }
-                }
-            });
-            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+                });
 
-            builder.show();
+                deleteAlert(view, stCompanyPicked, stTicker);
+                return true;
+            }
         });
-    }
-
-    public void rebuildList () {
-        Hashtable <String, String> htCompanies = new Hashtable<>();
-        for (SecurityItem si : companyListAdapter.getCompanyList()){
-            htCompanies.put(si.getTickerSymbol(), si.getName());
-        }
-
-        String[] saCompanies = new String[htCompanies.size()];
-        saCompanies = htCompanies.values().toArray(saCompanies);
-
-        ListAdapter theAdapter = new listViewAdapter(MainActivity.this, saCompanies);
-
-        listView.setAdapter(theAdapter);
 
     }
 
     public void sendData(View view, String stCompanyPicked, String stTicker) {
         // Define Intent
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-
-                            /* Alternative Bundle notation
-                            https://stackoverflow.com/questions/34607727/how-to-add-pass-multiple-values-to-intent-object
-                            https://zocada.com/using-intents-extras-pass-data-activities-android-beginners-guide/
-                            */
 
         // Pass Data
         intent.putExtra("COMPANY_NAME", stCompanyPicked);
@@ -145,12 +180,29 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(stCompanyPicked)) {
             Toast.makeText(MainActivity.this, "Please select a Company", Toast.LENGTH_SHORT).show();
         } else {
-            // Normally, when we launch a new activity, the previous activities will be kept in a queue like a stack of activities.
-            // So if you want to kill all the previous activities, use FLAG_ACTIVITY_CLEAR_TASK and FLAG_ACTIVITY_NEW_TASK flag
-            // on the Intent to clear all the activity stack.
-            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+    }
+
+    public void deleteAlert (View view, String stCompanyPicked, String stTicker) {
+        AlertDialog.Builder adDeleteCompany = new AlertDialog.Builder(this);
+        adDeleteCompany.setTitle("Do you wish to delete " + stCompanyPicked + "?");
+        adDeleteCompany.setIcon(android.R.drawable.ic_dialog_alert);
+        adDeleteCompany.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                companyListAdapter.deleteCompany(stTicker);
+                Toast.makeText(getApplicationContext(), "Deleted company " + stCompanyPicked, Toast.LENGTH_LONG).show();
+                buildList();
+            } });
+
+        adDeleteCompany.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_LONG).show();
+                //finish();
+            } });
+
+        AlertDialog alertDialog = adDeleteCompany.create();
+        alertDialog.show();
     }
 
 }
