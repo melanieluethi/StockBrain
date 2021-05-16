@@ -10,6 +10,18 @@ public class AllCompanyDetails {
     private FundamentalData fundamentalData;
     private DailyPrice dailyPrice;
 
+    public SecurityItem getSecurityItem() {
+        return securityItem;
+    }
+
+    public FundamentalData getFundamentalData() {
+        return fundamentalData;
+    }
+
+    public DailyPrice getDailyPrice() {
+        return dailyPrice;
+    }
+
     public AllCompanyDetails getAllCompanyDetails(String ticker) {
         this.securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
         this.fundamentalData = RepositoryProvider.getFundamentalDataRepository().getByTicker(ticker);
