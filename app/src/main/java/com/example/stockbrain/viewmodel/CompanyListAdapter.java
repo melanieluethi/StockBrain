@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableArrayList;
 
 import com.example.stockbrain.model.businessobject.DailyPrice;
 import com.example.stockbrain.model.businessobject.FundamentalData;
@@ -17,6 +19,12 @@ import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyListAdapter extends BaseObservable implements ListItemInteractionInterface {
+    protected static ObservableArrayList<SecurityItem> securityItemList = new ObservableArrayList<>();
+
+    public CompanyListAdapter() {
+        securityItemList.addAll(RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems());
+    }
+
     public void createCompany(String ticker) {
         SecurityItem securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
         if (securityItem == null) {
@@ -31,6 +39,7 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
         SecurityItemRepository securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
         SecurityItem securityItem = securityItemRepository.getByTicker(ticker);
         securityItemRepository.deleteEntity(securityItem);
+        securityItemList.remove(securityItem);
     }
 
     private void deleteCompanyDetails(String ticker) {
@@ -43,8 +52,9 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
         dailyPriceRepository.deleteEntity(dailyPrice);
     }
 
-    public List<SecurityItem> getCompanyList() {
-        return RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems();
+    @Bindable
+    public ObservableArrayList<SecurityItem> getCompanyList() {
+        return securityItemList;
     }
 
     public AllCompanyDetails getAllCompanyDetails(String ticker) {

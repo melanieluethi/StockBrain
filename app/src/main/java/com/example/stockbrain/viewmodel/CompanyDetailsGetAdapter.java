@@ -89,6 +89,7 @@ public class CompanyDetailsGetAdapter {
                         String url = response.body().get(0).getLogo();
                         securityItem.setUrlLogo(url);
                         securityItemRepository.saveEntity(securityItem);
+                        CompanyListAdapter.securityItemList.add(securityItem);
                         isGettingCompany = true;
                         Log.d("getImage", "Successfully!");
                     } else {
