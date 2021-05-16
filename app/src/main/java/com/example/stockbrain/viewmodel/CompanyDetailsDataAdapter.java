@@ -9,13 +9,8 @@ import com.example.stockbrain.model.businessobject.DailyPrice;
 import com.example.stockbrain.model.businessobject.DailyPriceBuilder;
 import com.example.stockbrain.model.businessobject.FundamentalData;
 import com.example.stockbrain.model.businessobject.FundamentalDataBuilder;
-import com.example.stockbrain.model.businessobject.SecurityItem;
-import com.example.stockbrain.model.businessobject.SecurityItemBuilder;
-import com.example.stockbrain.model.database.DailyPriceRepository;
-import com.example.stockbrain.model.database.FundamentalDataRepository;
 import com.example.stockbrain.model.database.RepositoryProvider;
-import com.example.stockbrain.model.database.SecurityItemRepository;
-import com.example.stockbrain.model.rest.pojo.CompanyLogoPojo;
+import com.example.stockbrain.model.database.StockBrainRepository;
 import com.example.stockbrain.model.rest.pojo.CompanyPojo;
 import com.example.stockbrain.model.rest.service.StockBrainService;
 import com.example.stockbrain.model.rest.util.RestConstants;
@@ -29,14 +24,12 @@ import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyDetailsDataAdapter {
-    private DailyPriceRepository dailyPriceRepository;
-    private FundamentalDataRepository fundamentalDataRepository;
+    private StockBrainRepository stockBrainRepository;
     private boolean isGettingPrices;
     private boolean isGettingFundamentalData;
 
     public CompanyDetailsDataAdapter(){
-        dailyPriceRepository = RepositoryProvider.getDailyPriceRepositoryInstance();
-        fundamentalDataRepository = RepositoryProvider.getFundamentalDataRepositoryInstance();
+        stockBrainRepository = RepositoryProvider.getStockBrainRepositoryInstance();
         isGettingPrices = false;
         isGettingFundamentalData = false;
     }
@@ -60,7 +53,7 @@ public class CompanyDetailsDataAdapter {
                             .withClosingPrice(closingPrice)
                             .withVolume(volume.intValue())
                             .build();
-                    dailyPriceRepository.saveEntity(dailyPrice);
+                    stockBrainRepository.saveEntity(dailyPrice);
                     isGettingPrices = true;
                     Log.d("getCompanyPrices", "Successfully");
                 } else {
@@ -130,7 +123,7 @@ public class CompanyDetailsDataAdapter {
                     if (!dataProfit[18].equals("null"))
                         profit = Double.parseDouble(dataProfit[18]);
                     fundamentalData.setProfit(profit);
-                    fundamentalDataRepository.saveEntity(fundamentalData);
+                    stockBrainRepository.saveEntity(fundamentalData);
                     isGettingFundamentalData = true;
                     Log.d("getCompanyFundamentalDataProfit", "Successfully");
                 } else {

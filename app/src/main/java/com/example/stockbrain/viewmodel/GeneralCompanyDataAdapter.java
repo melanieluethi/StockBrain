@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.model.businessobject.SecurityItemBuilder;
 import com.example.stockbrain.model.database.RepositoryProvider;
-import com.example.stockbrain.model.database.SecurityItemRepository;
+import com.example.stockbrain.model.database.StockBrainRepository;
 import com.example.stockbrain.model.rest.pojo.CompanyLogoPojo;
 import com.example.stockbrain.model.rest.pojo.CompanyPojo;
 import com.example.stockbrain.model.rest.service.StockBrainService;
@@ -19,12 +19,12 @@ import retrofit2.Response;
 
 public class GeneralCompanyDataAdapter {
     private CompanyAdapter companyAdapter;
-    private SecurityItemRepository securityItemRepository;
+    private StockBrainRepository stockBrainRepository;
     private boolean isGettingCompany;
 
     public GeneralCompanyDataAdapter(CompanyAdapter companyAdapter){
         this.companyAdapter = companyAdapter;
-        securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
+        stockBrainRepository = RepositoryProvider.getStockBrainRepositoryInstance();
         isGettingCompany = false;
     }
 
@@ -71,7 +71,7 @@ public class GeneralCompanyDataAdapter {
                     if (!response.body().isEmpty()) {
                         String url = response.body().get(0).getLogo();
                         securityItem.setUrlLogo(url);
-                        securityItemRepository.saveEntity(securityItem);
+                        stockBrainRepository.saveEntity(securityItem);
                         companyAdapter.addCompanyList(securityItem);
                         companyAdapter.buildMainActivityList();
                         isGettingCompany = true;

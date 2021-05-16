@@ -1,6 +1,7 @@
 package com.example.stockbrain.model.database;
 
 import com.activeandroid.Model;
+import com.activeandroid.query.Select;
 
 import java.util.List;
 
@@ -25,5 +26,7 @@ public abstract class AbstractRepository {
      */
     public abstract List<? extends Model> getAllItems();
 
-    public abstract Model getByTicker (String tickerSymbol);
+    public Model getByTicker(Class<? extends Model> entityClass, String tickerSymbol){
+        return new Select().from(entityClass).where("TickerSymbol=?", new Object[]{tickerSymbol}).executeSingle();
+    }
 }

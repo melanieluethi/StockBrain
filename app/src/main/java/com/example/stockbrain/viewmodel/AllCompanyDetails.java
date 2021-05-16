@@ -4,6 +4,7 @@ import com.example.stockbrain.model.businessobject.DailyPrice;
 import com.example.stockbrain.model.businessobject.FundamentalData;
 import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.model.database.RepositoryProvider;
+import com.example.stockbrain.model.database.StockBrainRepository;
 
 public class AllCompanyDetails {
     private SecurityItem securityItem;
@@ -23,9 +24,10 @@ public class AllCompanyDetails {
     }
 
     public AllCompanyDetails getAllCompanyDetails(String ticker) {
-        this.securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
-        this.fundamentalData = RepositoryProvider.getFundamentalDataRepositoryInstance().getByTicker(ticker);
-        this.dailyPrice = RepositoryProvider.getDailyPriceRepositoryInstance().getByTicker(ticker);
+        StockBrainRepository stockBrainRepositoryInstance = RepositoryProvider.getStockBrainRepositoryInstance();
+        this.securityItem = (SecurityItem) stockBrainRepositoryInstance.getByTicker(SecurityItem.class, ticker);
+        this.fundamentalData = (FundamentalData) stockBrainRepositoryInstance.getByTicker(FundamentalData.class, ticker);
+        this.dailyPrice = (DailyPrice) stockBrainRepositoryInstance.getByTicker(DailyPrice.class, ticker);
         return this;
     }
 }

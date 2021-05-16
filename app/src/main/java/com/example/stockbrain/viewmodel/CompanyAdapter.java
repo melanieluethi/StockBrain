@@ -7,10 +7,8 @@ import androidx.annotation.RequiresApi;
 import com.example.stockbrain.model.businessobject.DailyPrice;
 import com.example.stockbrain.model.businessobject.FundamentalData;
 import com.example.stockbrain.model.businessobject.SecurityItem;
-import com.example.stockbrain.model.database.DailyPriceRepository;
-import com.example.stockbrain.model.database.FundamentalDataRepository;
 import com.example.stockbrain.model.database.RepositoryProvider;
-import com.example.stockbrain.model.database.SecurityItemRepository;
+import com.example.stockbrain.model.database.StockBrainRepository;
 import com.example.stockbrain.view.MainActivity;
 
 import java.util.ArrayList;
@@ -18,19 +16,20 @@ import java.util.ArrayList;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyAdapter implements CompanyAdapterInterface {
     private ArrayList<SecurityItem> securityItemList = new ArrayList<>();
+    private StockBrainRepository stockBrainRepositoryInstance = RepositoryProvider.getStockBrainRepositoryInstance();
     private MainActivity mainActivity;
 
     public CompanyAdapter() {
-        securityItemList.addAll(RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems());
+        securityItemList.addAll(stockBrainRepositoryInstance.getAllItems());
     }
 
     public CompanyAdapter(MainActivity mainActivity) {
-        securityItemList.addAll(RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems());
+        securityItemList.addAll(stockBrainRepositoryInstance.getAllItems());
         this.mainActivity = mainActivity;
     }
 
     public void createCompany(String ticker) {
-        SecurityItem securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
+        SecurityItem securityItem = (SecurityItem) stockBrainRepositoryInstance.getByTicker(SecurityItem.class, ticker);
         if (securityItem == null) {
             GeneralCompanyDataAdapter generalCompanyAdapter = new GeneralCompanyDataAdapter(this);
             generalCompanyAdapter.getCompanyGeneral(ticker);
@@ -40,24 +39,21 @@ public class CompanyAdapter implements CompanyAdapterInterface {
     @Override
     public void deleteCompany(String ticker) {
         deleteCompanyDetails(ticker);
-        SecurityItemRepository securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
-        SecurityItem securityItem = securityItemRepository.getByTicker(ticker);
+        SecurityItem securityItem = (SecurityItem) stockBrainRepositoryInstance.getByTicker(SecurityItem.class, ticker);
         if (securityItem != null) {
-            securityItemRepository.deleteEntity(securityItem);
+            stockBrainRepositoryInstance.deleteEntity(securityItem);
             securityItemList.remove(securityItem);
         }
     }
 
     private void deleteCompanyDetails(String ticker) {
-        FundamentalDataRepository fundamentalDataRepository = RepositoryProvider.getFundamentalDataRepositoryInstance();
-        FundamentalData fundamentalData = fundamentalDataRepository.getByTicker(ticker);
+        FundamentalData fundamentalData = (FundamentalData) stockBrainRepositoryInstance.getByTicker(FundamentalData.class, ticker);
         if (fundamentalData != null)
-            fundamentalDataRepository.deleteEntity(fundamentalData);
+            stockBrainRepositoryInstance.deleteEntity(fundamentalData);
 
-        DailyPriceRepository dailyPriceRepository = RepositoryProvider.getDailyPriceRepositoryInstance();
-        DailyPrice dailyPrice = dailyPriceRepository.getByTicker(ticker);
+        DailyPrice dailyPrice = (DailyPrice) stockBrainRepositoryInstance.getByTicker(DailyPrice.class, ticker);
         if (dailyPrice != null)
-            dailyPriceRepository.deleteEntity(dailyPrice);
+            stockBrainRepositoryInstance.deleteEntity(dailyPrice);
     }
 
     public ArrayList<SecurityItem> getCompanyList() {
