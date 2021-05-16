@@ -5,8 +5,6 @@ import com.activeandroid.Model;
 import java.util.List;
 
 public abstract class AbstractRepository {
-
-
     /**
      * Saves or updates the given database entity
      */
@@ -27,5 +25,5 @@ public abstract class AbstractRepository {
      */
     public abstract List<? extends Model> getAllItems();
 
-    public abstract  Model getByTicker (String tickerSymbol);
+    public abstract Model getByTicker (String tickerSymbol);
 }

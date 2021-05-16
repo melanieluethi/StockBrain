@@ -3,9 +3,6 @@ package com.example.stockbrain.viewmodel;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
-import androidx.databinding.ObservableArrayList;
 
 import com.example.stockbrain.model.businessobject.DailyPrice;
 import com.example.stockbrain.model.businessobject.FundamentalData;
@@ -14,20 +11,29 @@ import com.example.stockbrain.model.database.DailyPriceRepository;
 import com.example.stockbrain.model.database.FundamentalDataRepository;
 import com.example.stockbrain.model.database.RepositoryProvider;
 import com.example.stockbrain.model.database.SecurityItemRepository;
+import com.example.stockbrain.view.MainActivity;
+
+import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class CompanyListAdapter extends BaseObservable implements ListItemInteractionInterface {
-    private ObservableArrayList<SecurityItem> securityItemList = new ObservableArrayList<>();
+public class CompanyAdapter implements CompanyAdapterInterface {
+    private ArrayList<SecurityItem> securityItemList = new ArrayList<>();
+    private MainActivity mainActivity;
 
-    public CompanyListAdapter() {
+    public CompanyAdapter() {
         securityItemList.addAll(RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems());
+    }
+
+    public CompanyAdapter(MainActivity mainActivity) {
+        securityItemList.addAll(RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems());
+        this.mainActivity = mainActivity;
     }
 
     public void createCompany(String ticker) {
         SecurityItem securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
         if (securityItem == null) {
-            CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter(this);
-            companyDetailsGetAdapter.getCompanyGeneral(ticker);
+            GeneralCompanyDataAdapter generalCompanyAdapter = new GeneralCompanyDataAdapter(this);
+            generalCompanyAdapter.getCompanyGeneral(ticker);
         }
     }
 
@@ -43,27 +49,23 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
     }
 
     private void deleteCompanyDetails(String ticker) {
-        FundamentalDataRepository fundamentalDataRepository = RepositoryProvider.getFundamentalDataRepository();
+        FundamentalDataRepository fundamentalDataRepository = RepositoryProvider.getFundamentalDataRepositoryInstance();
         FundamentalData fundamentalData = fundamentalDataRepository.getByTicker(ticker);
         if (fundamentalData != null)
             fundamentalDataRepository.deleteEntity(fundamentalData);
 
-        DailyPriceRepository dailyPriceRepository = RepositoryProvider.getDailyPriceRepository();
+        DailyPriceRepository dailyPriceRepository = RepositoryProvider.getDailyPriceRepositoryInstance();
         DailyPrice dailyPrice = dailyPriceRepository.getByTicker(ticker);
         if (dailyPrice != null)
             dailyPriceRepository.deleteEntity(dailyPrice);
     }
 
-    @Bindable
-    public ObservableArrayList<SecurityItem> getCompanyList() {
+    public ArrayList<SecurityItem> getCompanyList() {
         return securityItemList;
     }
 
     public void addCompanyList(SecurityItem securityItem) {
         this.securityItemList.add(securityItem);
-    }
-    public void removeCompanyList(SecurityItem securityItem) {
-        this.securityItemList.remove(securityItem);
     }
 
     public AllCompanyDetails getAllCompanyDetails(String ticker) {
@@ -73,8 +75,12 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
     }
 
     private void getCompanyDetails(String ticker) {
-        CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter(this);
+        CompanyDetailsDataAdapter companyDetailsGetAdapter = new CompanyDetailsDataAdapter();
         companyDetailsGetAdapter.getCompanyPrices(ticker);
         companyDetailsGetAdapter.getCompanyFundamentalData(ticker);
+    }
+
+    protected void buildMainActivityList() {
+        mainActivity.buildList();
     }
 }

@@ -17,18 +17,6 @@ public class FundamentalData extends Model {
     @Column(name = "Liabilities")
     private Double liabilities;
 
-    public FundamentalData() {
-        super();
-    }
-
-    public FundamentalData(Double revenue, Double profit, Double assets, Double liabilities) {
-        super();
-        this.revenue = revenue;
-        this.profit = profit;
-        this.assets = assets;
-        this.liabilities = liabilities;
-    }
-
     public String getTickerSymbol() {
         return tickerSymbol;
     }

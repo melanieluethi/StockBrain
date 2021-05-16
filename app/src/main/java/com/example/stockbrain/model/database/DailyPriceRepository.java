@@ -11,7 +11,6 @@ public class DailyPriceRepository extends AbstractRepository {
         return new Select().from(DailyPrice.class).execute();
     }
 
-    @Override
     public DailyPrice getByTicker(String ticker) {
         return new Select().from(DailyPrice.class).where("TickerSymbol=?", new Object[]{ticker}).executeSingle();
     }

@@ -16,17 +16,6 @@ public class SecurityItem extends Model {
     @Column(name = "Logo")
     private String urlLogo;
 
-    public SecurityItem() {
-        super();
-
-    }
-    public SecurityItem(String tickerSymbol, String name, String urlLogo) {
-        super();
-        this.tickerSymbol = tickerSymbol;
-        this.name = name;
-        this.urlLogo = urlLogo;
-    }
-
     public String getTickerSymbol() {
         return tickerSymbol;
     }

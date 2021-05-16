@@ -2,8 +2,6 @@ package com.example.stockbrain.view;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.ObservableArrayList;
-import androidx.databinding.ObservableList;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,66 +16,29 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.stockbrain.R;
-import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.viewmodel.AllCompanyDetails;
-import com.example.stockbrain.viewmodel.CompanyListAdapter;
+import com.example.stockbrain.viewmodel.CompanyAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
-
-import static java.lang.Thread.*;
 
 public class MainActivity extends AppCompatActivity {
-    CompanyListAdapter companyListAdapter = new CompanyListAdapter();
+    CompanyAdapter companyAdapter = new CompanyAdapter(this);
     ListView listView;
     String stTicker = "";
     String stAddNewCompanyTicker = "";
-    ObservableArrayList<SecurityItem> oaCompanyList = companyListAdapter.getCompanyList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        companyListAdapter.createCompany("AAPL");
-        companyListAdapter.createCompany("GOOG");
-        companyListAdapter.createCompany("MSFT");
-        companyListAdapter.createCompany("TSLA");
-        companyListAdapter.createCompany("VOW.DE");
-        companyListAdapter.createCompany("SBUX");
-
-        oaCompanyList.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<SecurityItem>>() {
-            @Override
-            public void onChanged(ObservableList<SecurityItem> sender) {
-                System.out.println("onChanged ausgeführt");
-                buildList();
-            }
-
-            @Override
-            public void onItemRangeChanged(ObservableList<SecurityItem> sender, int positionStart, int itemCount) {
-                System.out.println("onItemRangeChanged ausgeführt");
-                buildList();
-            }
-
-            @Override
-            public void onItemRangeInserted(ObservableList<SecurityItem> sender, int positionStart, int itemCount) {
-                //do nothing
-            }
-
-            @Override
-            public void onItemRangeMoved(ObservableList<SecurityItem> sender, int fromPosition, int toPosition, int itemCount) {
-                System.out.println("onItemRangeMoved ausgeführt");
-                buildList();
-            }
-
-            @Override
-            public void onItemRangeRemoved(ObservableList<SecurityItem> sender, int positionStart, int itemCount) {
-                System.out.println("onItemRangeRemoved ausgeführt");
-                buildList();
-            }
-        });
+        companyAdapter.createCompany("AAPL");
+        companyAdapter.createCompany("GOOG"  );
+        companyAdapter.createCompany("MSFT");
+        companyAdapter.createCompany("TSLA");
+        companyAdapter.createCompany("VOW.DE");
+        companyAdapter.createCompany("SBUX");
 
         FloatingActionButton fbAddNewCompany = findViewById(R.id.fbAddNewCompany);
         fbAddNewCompany.setOnClickListener(e -> {
@@ -96,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.dismiss();
                     stAddNewCompanyTicker = input.getEditText().getText().toString();
                     if (!(stAddNewCompanyTicker.equals(""))){
-                        companyListAdapter.createCompany(stAddNewCompanyTicker);
+                        companyAdapter.createCompany(stAddNewCompanyTicker);
                         buildList();
                         Toast.makeText(MainActivity.this, "Added Company " + stAddNewCompanyTicker, Toast.LENGTH_LONG);
                     }
@@ -115,15 +76,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void buildList () {
         Hashtable <String, String> htCompanies = new Hashtable<>();
-        System.out.println("buildList");
-        for (SecurityItem si : oaCompanyList){
-            htCompanies.put(si.getTickerSymbol(), si.getName());
-        }
-        System.out.println("buildList2");
+        companyAdapter.getCompanyList().forEach(si -> htCompanies.put(si.getTickerSymbol(), si.getName()));
         String[] saCompanies = new String[htCompanies.size()];
         saCompanies = htCompanies.values().toArray(saCompanies);
 
-        ListAdapter theAdapter = new listViewAdapter(MainActivity.this, saCompanies);
+        ListAdapter theAdapter = new ListViewAdapter(MainActivity.this, saCompanies);
 
         listView = findViewById(R.id.lvCompanies);
         listView.setAdapter(theAdapter);
@@ -140,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                AllCompanyDetails allDetails = companyListAdapter.getAllCompanyDetails(stTicker);
+                AllCompanyDetails allDetails = companyAdapter.getAllCompanyDetails(stTicker);
                 //Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
 
                 sendData(view, stCompanyPicked, stTicker);
@@ -190,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         adDeleteCompany.setIcon(android.R.drawable.ic_dialog_alert);
         adDeleteCompany.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                companyListAdapter.deleteCompany(stTicker);
+                companyAdapter.deleteCompany(stTicker);
                 Toast.makeText(getApplicationContext(), "Deleted company " + stCompanyPicked, Toast.LENGTH_LONG).show();
                 buildList();
             } });
@@ -198,11 +155,9 @@ public class MainActivity extends AppCompatActivity {
         adDeleteCompany.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getApplicationContext(), "cancel", Toast.LENGTH_LONG).show();
-                //finish();
             } });
 
         AlertDialog alertDialog = adDeleteCompany.create();
         alertDialog.show();
     }
-
 }

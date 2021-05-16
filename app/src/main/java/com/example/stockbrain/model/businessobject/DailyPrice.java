@@ -13,10 +13,6 @@ public class DailyPrice extends Model {
     @Column(name = "Volume")
     private Integer volume; // Gehandeltes Volumen an Aktien
 
-    public DailyPrice(){
-        super();
-    }
-
     public String getTickerSymbol() {
         return tickerSymbol;
     }

@@ -11,14 +11,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.stockbrain.R;
 import com.example.stockbrain.model.businessobject.SecurityItem;
-import com.example.stockbrain.viewmodel.CompanyListAdapter;
-import com.squareup.picasso.Picasso;
+import com.example.stockbrain.viewmodel.CompanyAdapter;
 
-public class listViewAdapter extends ArrayAdapter<String>  {
+public class ListViewAdapter extends ArrayAdapter<String>  {
 
-    CompanyListAdapter companyListAdapter = new CompanyListAdapter();
+    CompanyAdapter companyAdapter = new CompanyAdapter();
 
-    public listViewAdapter(Context context, String[] values) {
+    public ListViewAdapter(Context context, String[] values) {
         super(context,
                 R.layout.row_layout_2,
                 values);
@@ -40,7 +39,7 @@ public class listViewAdapter extends ArrayAdapter<String>  {
         ImageView imageView = (ImageView) theView.findViewById(R.id.imageView1);
         String stImageURL = "";
 
-        for (SecurityItem si : companyListAdapter.getCompanyList()){
+        for (SecurityItem si : companyAdapter.getCompanyList()){
             if (si.getName().equals(stCompany)) {
                 stImageURL = si.getUrlLogo();
             }

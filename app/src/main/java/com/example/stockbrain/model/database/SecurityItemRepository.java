@@ -6,16 +6,13 @@ import com.example.stockbrain.model.businessobject.SecurityItem;
 import java.util.List;
 
 public class SecurityItemRepository extends AbstractRepository {
-
-    protected SecurityItemRepository(){}
-
     @Override
     public List<SecurityItem> getAllItems() {
         return new Select().from(SecurityItem.class).execute();
     }
 
     /**
-     * Returns only one security item with provided id.
+     * Returns only one security item with ticker.
      * Returns null if tupel with given id does not exist
      */
     public SecurityItem getByTicker(String ticker) {

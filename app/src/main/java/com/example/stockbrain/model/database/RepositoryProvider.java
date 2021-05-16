@@ -17,14 +17,14 @@ public class RepositoryProvider {
         return securityItemRepository;
     }
 
-    public static FundamentalDataRepository getFundamentalDataRepository() {
+    public static FundamentalDataRepository getFundamentalDataRepositoryInstance() {
         if(fundamentalDataRepository == null){
             fundamentalDataRepository = new FundamentalDataRepository();
         }
         return fundamentalDataRepository;
     }
 
-    public static DailyPriceRepository getDailyPriceRepository() {
+    public static DailyPriceRepository getDailyPriceRepositoryInstance() {
         if(dailyPriceRepository == null){
             dailyPriceRepository = new DailyPriceRepository();
         }

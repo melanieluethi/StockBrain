@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.example.stockbrain.R;
 import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.viewmodel.AllCompanyDetails;
-import com.example.stockbrain.viewmodel.CompanyListAdapter;
+import com.example.stockbrain.viewmodel.CompanyAdapter;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView ivDetailCompanyLogo;
 
     String stCompanyName, stTicker;
-    CompanyListAdapter companyListAdapter = new CompanyListAdapter();
+    CompanyAdapter companyAdapter = new CompanyAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -43,12 +43,12 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         String stImageURL = "";
-        for (SecurityItem si : companyListAdapter.getCompanyList()){
+        for (SecurityItem si : companyAdapter.getCompanyList()){
             if (si.getName().equals(stCompanyName)) {
                 stImageURL = si.getUrlLogo();
             }
         }
-        AllCompanyDetails allCompanyDetails = companyListAdapter.getAllCompanyDetails(stTicker);
+        AllCompanyDetails allCompanyDetails = companyAdapter.getAllCompanyDetails(stTicker);
         allCompanyDetails.getSecurityItem().getName();
         allCompanyDetails.getDailyPrice().getVolume();
 

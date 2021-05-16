@@ -24,8 +24,8 @@ public class AllCompanyDetails {
 
     public AllCompanyDetails getAllCompanyDetails(String ticker) {
         this.securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
-        this.fundamentalData = RepositoryProvider.getFundamentalDataRepository().getByTicker(ticker);
-        this.dailyPrice = RepositoryProvider.getDailyPriceRepository().getByTicker(ticker);
+        this.fundamentalData = RepositoryProvider.getFundamentalDataRepositoryInstance().getByTicker(ticker);
+        this.dailyPrice = RepositoryProvider.getDailyPriceRepositoryInstance().getByTicker(ticker);
         return this;
     }
 }
