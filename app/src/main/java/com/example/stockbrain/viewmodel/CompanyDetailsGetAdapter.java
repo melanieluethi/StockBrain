@@ -29,6 +29,7 @@ import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyDetailsGetAdapter {
+    private CompanyListAdapter companyListAdapter;
     private SecurityItemRepository securityItemRepository;
     private DailyPriceRepository dailyPriceRepository;
     private FundamentalDataRepository fundamentalDataRepository;
@@ -36,7 +37,8 @@ public class CompanyDetailsGetAdapter {
     private boolean isGettingPrices;
     private boolean isGettingFundamentalData;
 
-    public CompanyDetailsGetAdapter(){
+    public CompanyDetailsGetAdapter(CompanyListAdapter companyListAdapter){
+        this.companyListAdapter = companyListAdapter;
         securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
         dailyPriceRepository = RepositoryProvider.getDailyPriceRepository();
         fundamentalDataRepository = RepositoryProvider.getFundamentalDataRepository();
@@ -89,7 +91,7 @@ public class CompanyDetailsGetAdapter {
                         String url = response.body().get(0).getLogo();
                         securityItem.setUrlLogo(url);
                         securityItemRepository.saveEntity(securityItem);
-                        CompanyListAdapter.securityItemList.add(securityItem);
+                        companyListAdapter.addCompanyList(securityItem);
                         isGettingCompany = true;
                         Log.d("getImage", "Successfully!");
                     } else {

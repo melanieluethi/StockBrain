@@ -15,11 +15,9 @@ import com.example.stockbrain.model.database.FundamentalDataRepository;
 import com.example.stockbrain.model.database.RepositoryProvider;
 import com.example.stockbrain.model.database.SecurityItemRepository;
 
-import java.util.List;
-
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyListAdapter extends BaseObservable implements ListItemInteractionInterface {
-    protected static ObservableArrayList<SecurityItem> securityItemList = new ObservableArrayList<>();
+    private ObservableArrayList<SecurityItem> securityItemList = new ObservableArrayList<>();
 
     public CompanyListAdapter() {
         securityItemList.addAll(RepositoryProvider.getSecurityItemRepositoryInstance().getAllItems());
@@ -28,7 +26,7 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
     public void createCompany(String ticker) {
         SecurityItem securityItem = RepositoryProvider.getSecurityItemRepositoryInstance().getByTicker(ticker);
         if (securityItem == null) {
-            CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
+            CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter(this);
             companyDetailsGetAdapter.getCompanyGeneral(ticker);
         }
     }
@@ -38,23 +36,34 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
         deleteCompanyDetails(ticker);
         SecurityItemRepository securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
         SecurityItem securityItem = securityItemRepository.getByTicker(ticker);
-        securityItemRepository.deleteEntity(securityItem);
-        securityItemList.remove(securityItem);
+        if (securityItem != null) {
+            securityItemRepository.deleteEntity(securityItem);
+            securityItemList.remove(securityItem);
+        }
     }
 
     private void deleteCompanyDetails(String ticker) {
         FundamentalDataRepository fundamentalDataRepository = RepositoryProvider.getFundamentalDataRepository();
         FundamentalData fundamentalData = fundamentalDataRepository.getByTicker(ticker);
-        fundamentalDataRepository.deleteEntity(fundamentalData);
+        if (fundamentalData != null)
+            fundamentalDataRepository.deleteEntity(fundamentalData);
 
         DailyPriceRepository dailyPriceRepository = RepositoryProvider.getDailyPriceRepository();
         DailyPrice dailyPrice = dailyPriceRepository.getByTicker(ticker);
-        dailyPriceRepository.deleteEntity(dailyPrice);
+        if (dailyPrice != null)
+            dailyPriceRepository.deleteEntity(dailyPrice);
     }
 
     @Bindable
     public ObservableArrayList<SecurityItem> getCompanyList() {
         return securityItemList;
+    }
+
+    public void addCompanyList(SecurityItem securityItem) {
+        this.securityItemList.add(securityItem);
+    }
+    public void removeCompanyList(SecurityItem securityItem) {
+        this.securityItemList.remove(securityItem);
     }
 
     public AllCompanyDetails getAllCompanyDetails(String ticker) {
@@ -64,7 +73,7 @@ public class CompanyListAdapter extends BaseObservable implements ListItemIntera
     }
 
     private void getCompanyDetails(String ticker) {
-        CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter();
+        CompanyDetailsGetAdapter companyDetailsGetAdapter = new CompanyDetailsGetAdapter(this);
         companyDetailsGetAdapter.getCompanyPrices(ticker);
         companyDetailsGetAdapter.getCompanyFundamentalData(ticker);
     }
