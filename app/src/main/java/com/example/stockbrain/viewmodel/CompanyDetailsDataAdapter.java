@@ -25,16 +25,22 @@ import retrofit2.Response;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyDetailsDataAdapter {
     private StockBrainRepository stockBrainRepository;
+    private CompanyAdapter companyAdapter;
     private boolean isGettingPrices;
     private boolean isGettingFundamentalData;
 
-    public CompanyDetailsDataAdapter(){
+    public CompanyDetailsDataAdapter(CompanyAdapter companyAdapter){
         stockBrainRepository = RepositoryProvider.getStockBrainRepositoryInstance();
+        this.companyAdapter = companyAdapter;
         isGettingPrices = false;
         isGettingFundamentalData = false;
     }
 
-    protected void getCompanyPrices(String ticker) {
+    protected void getCompanyDetails(String ticker) {
+        getCompanyPrices(ticker);
+    }
+
+    private void getCompanyPrices(String ticker) {
         StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyPojo>> call = service.getCompanyPrices(ticker);
         call.enqueue(new Callback<List<CompanyPojo>>() {
@@ -56,6 +62,7 @@ public class CompanyDetailsDataAdapter {
                     stockBrainRepository.saveEntity(dailyPrice);
                     isGettingPrices = true;
                     Log.d("getCompanyPrices", "Successfully");
+                    getCompanyFundamentalData(ticker);
                 } else {
                     isGettingPrices = false;
                     Log.d("getCompanyPrices", "Response Failed");
@@ -70,7 +77,7 @@ public class CompanyDetailsDataAdapter {
         });
     }
 
-    protected void getCompanyFundamentalData(String ticker) {
+    private void getCompanyFundamentalData(String ticker) {
         StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyPojo>> call = service.getCompanyStatements(ticker, RestConstants.STATEMENT_BALANCE_SHEET, RestConstants.PERIOD, RestConstants.FYEAR);
         call.enqueue(new Callback<List<CompanyPojo>>() {
@@ -111,7 +118,7 @@ public class CompanyDetailsDataAdapter {
         });
     }
 
-    protected void getCompanyFundamentalDataProfit(String ticker, FundamentalData fundamentalData) {
+    private void getCompanyFundamentalDataProfit(String ticker, FundamentalData fundamentalData) {
         StockBrainService service = RetrofitClientInstance.getStockRetrofitInstance().create(StockBrainService.class);
         Call<List<CompanyPojo>> call = service.getCompanyStatements(ticker, RestConstants.STATEMENT_PROFIT_LOSS, RestConstants.PERIOD, RestConstants.FYEAR);
         call.enqueue(new Callback<List<CompanyPojo>>() {
@@ -124,6 +131,7 @@ public class CompanyDetailsDataAdapter {
                         profit = Double.parseDouble(dataProfit[18]);
                     fundamentalData.setProfit(profit);
                     stockBrainRepository.saveEntity(fundamentalData);
+                    companyAdapter.sendData(ticker);
                     isGettingFundamentalData = true;
                     Log.d("getCompanyFundamentalDataProfit", "Successfully");
                 } else {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface CompanyAdapterInterface {
     ArrayList<SecurityItem> getCompanyList();
-    AllCompanyDetails getAllCompanyDetails(String ticker);
+    void getCompanyDetails(String ticker);
     void createCompany(String ticker);
     void deleteCompany(String ticker);
 }

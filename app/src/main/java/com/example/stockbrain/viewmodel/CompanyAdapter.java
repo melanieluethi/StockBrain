@@ -64,19 +64,16 @@ public class CompanyAdapter implements CompanyAdapterInterface {
         this.securityItemList.add(securityItem);
     }
 
-    public AllCompanyDetails getAllCompanyDetails(String ticker) {
-        getCompanyDetails(ticker);
-        AllCompanyDetails allCompanyDetails = new AllCompanyDetails();
-        return allCompanyDetails.getAllCompanyDetails(ticker);
-    }
-
-    private void getCompanyDetails(String ticker) {
-        CompanyDetailsDataAdapter companyDetailsGetAdapter = new CompanyDetailsDataAdapter();
-        companyDetailsGetAdapter.getCompanyPrices(ticker);
-        companyDetailsGetAdapter.getCompanyFundamentalData(ticker);
+    public void getCompanyDetails(String ticker) {
+        CompanyDetailsDataAdapter companyDetailsGetAdapter = new CompanyDetailsDataAdapter(this);
+        companyDetailsGetAdapter.getCompanyDetails(ticker);
     }
 
     protected void buildMainActivityList() {
         mainActivity.buildList();
+    }
+
+    protected void sendData(String ticker) {
+        mainActivity.sendData(mainActivity.getMainView(), mainActivity.getCompanyPicked(), ticker);
     }
 }

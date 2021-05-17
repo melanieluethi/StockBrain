@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     String stTicker = "";
     String stAddNewCompanyTicker = "";
+    View mainView;
+    String companyPicked = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +99,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                AllCompanyDetails allDetails = companyAdapter.getAllCompanyDetails(stTicker);
+                companyAdapter.getCompanyDetails(stTicker);
                 //Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
 
-                sendData(view, stCompanyPicked, stTicker);
-
+                mainView = view;
+                companyPicked = stCompanyPicked;
             }
         });
 
@@ -159,5 +161,13 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = adDeleteCompany.create();
         alertDialog.show();
+    }
+
+    public View getMainView() {
+        return mainView;
+    }
+
+    public String getCompanyPicked() {
+        return companyPicked;
     }
 }
