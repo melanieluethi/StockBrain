@@ -48,9 +48,10 @@ public class DetailActivity extends AppCompatActivity {
                 stImageURL = si.getUrlLogo();
             }
         }
+        /**
         AllCompanyDetails allCompanyDetails = companyAdapter.getAllCompanyDetails(stTicker);
         allCompanyDetails.getSecurityItem().getName();
-        allCompanyDetails.getDailyPrice().getVolume();
+        allCompanyDetails.getDailyPrice().getVolume();*/
 
         Glide.with(DetailActivity.this).load(stImageURL).into(ivDetailCompanyLogo);
 
