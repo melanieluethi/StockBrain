@@ -129,7 +129,6 @@ public class CompanyDetailsDataAdapter {
                     companyAdapter.sendData(ticker);
                     Log.d("getCompanyFundamentalDataProfit", "Successfully");
                 } else {
-
                     companyAdapter.messageWentWrong("save Fundamental Data");
                     Log.d("getCompanyFundamentalDataProfit", "Response Failed");
                 }
