@@ -71,6 +71,7 @@ public class GeneralCompanyDataAdapter {
                         stockBrainRepository.saveEntity(securityItem);
                         companyAdapter.addCompanyList(securityItem);
                         companyAdapter.buildMainActivityList();
+                        companyAdapter.messageSuccessfully("Added Company " + securityItem.getName());
                         Log.d("getImage", "Successfully!");
                     } else {
                         String[] s = companyName.split(" ");

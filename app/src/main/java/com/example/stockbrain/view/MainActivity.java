@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         companyAdapter.createCompany("TSLA");
         companyAdapter.createCompany("VOW.DE");
         companyAdapter.createCompany("SBUX");
+        buildList();
 
         FloatingActionButton fbAddNewCompany = findViewById(R.id.fbAddNewCompany);
         fbAddNewCompany.setOnClickListener(e -> {
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                     if (!(stAddNewCompanyTicker.equals(""))){
                         companyAdapter.createCompany(stAddNewCompanyTicker);
                         buildList();
-                        Toast.makeText(MainActivity.this, "Added Company " + stAddNewCompanyTicker, Toast.LENGTH_LONG);
                     }
                 }
             });
@@ -100,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 companyAdapter.getCompanyDetails(stTicker);
-                //Toast.makeText(MainActivity.this, stCompanyPicked, Toast.LENGTH_LONG).show();
-
                 mainView = view;
                 companyPicked = stCompanyPicked;
             }
@@ -110,16 +108,13 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                System.out.println("Long clicked");
                 String stCompanyPicked = String.valueOf(adapterView.getItemAtPosition(position));
-                System.out.println("Selected: " + stCompanyPicked);
                 htCompanies.entrySet().forEach(v -> {
                     if(v.getValue().equals(stCompanyPicked)){
                         stTicker = v.getKey();
                         return;
                     }
                 });
-
                 deleteAlert(view, stCompanyPicked, stTicker);
                 return true;
             }
@@ -169,6 +164,10 @@ public class MainActivity extends AppCompatActivity {
 
     public String getCompanyPicked() {
         return companyPicked;
+    }
+
+    public void messageSuccessfully(String successfully) {
+        Toast.makeText(MainActivity.this, "Successfully! " + successfully + ".", Toast.LENGTH_SHORT).show();
     }
 
     public void messageWentWrong(String error) {

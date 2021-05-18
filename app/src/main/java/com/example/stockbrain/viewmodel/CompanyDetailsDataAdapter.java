@@ -125,6 +125,7 @@ public class CompanyDetailsDataAdapter {
                         profit = Double.parseDouble(dataProfit[18]);
                     fundamentalData.setProfit(profit);
                     stockBrainRepository.saveEntity(fundamentalData);
+                    companyAdapter.messageSuccessfully("Saved Detail Data.");
                     companyAdapter.sendData(ticker);
                     Log.d("getCompanyFundamentalDataProfit", "Successfully");
                 } else {

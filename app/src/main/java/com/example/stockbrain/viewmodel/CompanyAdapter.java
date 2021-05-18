@@ -73,6 +73,10 @@ public class CompanyAdapter implements CompanyAdapterInterface {
         mainActivity.buildList();
     }
 
+    protected void messageSuccessfully(String successfully) {
+        mainActivity.messageSuccessfully(successfully);
+    }
+
     protected void messageWentWrong(String error) {
         mainActivity.messageWentWrong(error);
     }
