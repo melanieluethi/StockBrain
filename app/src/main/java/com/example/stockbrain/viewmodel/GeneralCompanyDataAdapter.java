@@ -20,12 +20,10 @@ import retrofit2.Response;
 public class GeneralCompanyDataAdapter {
     private CompanyAdapter companyAdapter;
     private StockBrainRepository stockBrainRepository;
-    private boolean isGettingCompany;
 
     public GeneralCompanyDataAdapter(CompanyAdapter companyAdapter){
         this.companyAdapter = companyAdapter;
         stockBrainRepository = RepositoryProvider.getStockBrainRepositoryInstance();
-        isGettingCompany = false;
     }
 
     protected void getCompanyGeneral(String ticker) {
@@ -45,17 +43,16 @@ public class GeneralCompanyDataAdapter {
                         companyName = "Apple";
                     }
                     getLogoUrl(companyName, securityItem);
-                    isGettingCompany = true;
                     Log.d("getCompanyGeneral", "Successfully!");
                 } else {
-                    isGettingCompany = false;
+                    companyAdapter.messageWentWrong("create Company");
                     Log.d("getCompanyGeneral", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
-                isGettingCompany = false;
+                companyAdapter.messageWentWrong("create Company");
                 Log.d("getCompanyGeneral", "FAILED");
             }
         });
@@ -74,31 +71,22 @@ public class GeneralCompanyDataAdapter {
                         stockBrainRepository.saveEntity(securityItem);
                         companyAdapter.addCompanyList(securityItem);
                         companyAdapter.buildMainActivityList();
-                        isGettingCompany = true;
                         Log.d("getImage", "Successfully!");
                     } else {
                         String[] s = companyName.split(" ");
                         getLogoUrl(s[0], securityItem);
                     }
                 } else {
-                    isGettingCompany = false;
+                    companyAdapter.messageWentWrong("create Company");
                     Log.d("getImage", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyLogoPojo>> call, Throwable t) {
-                isGettingCompany = false;
+                companyAdapter.messageWentWrong("create Company");
                 Log.d("getImage", "FAILED");
             }
         });
-    }
-
-    public boolean isGettingCompany() {
-        return isGettingCompany;
-    }
-
-    public void setGettingCompany(boolean gettingCompany) {
-        isGettingCompany = gettingCompany;
     }
 }

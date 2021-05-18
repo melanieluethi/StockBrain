@@ -73,6 +73,10 @@ public class CompanyAdapter implements CompanyAdapterInterface {
         mainActivity.buildList();
     }
 
+    protected void messageWentWrong(String error) {
+        mainActivity.messageWentWrong(error);
+    }
+
     protected void sendData(String ticker) {
         mainActivity.sendData(mainActivity.getMainView(), mainActivity.getCompanyPicked(), ticker);
     }

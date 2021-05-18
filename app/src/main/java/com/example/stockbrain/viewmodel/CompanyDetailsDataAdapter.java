@@ -26,14 +26,10 @@ import retrofit2.Response;
 public class CompanyDetailsDataAdapter {
     private StockBrainRepository stockBrainRepository;
     private CompanyAdapter companyAdapter;
-    private boolean isGettingPrices;
-    private boolean isGettingFundamentalData;
 
     public CompanyDetailsDataAdapter(CompanyAdapter companyAdapter){
         stockBrainRepository = RepositoryProvider.getStockBrainRepositoryInstance();
         this.companyAdapter = companyAdapter;
-        isGettingPrices = false;
-        isGettingFundamentalData = false;
     }
 
     protected void getCompanyDetails(String ticker) {
@@ -60,18 +56,17 @@ public class CompanyDetailsDataAdapter {
                             .withVolume(volume.intValue())
                             .build();
                     stockBrainRepository.saveEntity(dailyPrice);
-                    isGettingPrices = true;
                     Log.d("getCompanyPrices", "Successfully");
                     getCompanyFundamentalData(ticker);
                 } else {
-                    isGettingPrices = false;
+                    companyAdapter.messageWentWrong("save Prices");
                     Log.d("getCompanyPrices", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
-                isGettingPrices = false;
+                companyAdapter.messageWentWrong("save Prices");
                 Log.d("getCompanyPrices", "FAILED");
             }
         });
@@ -102,17 +97,16 @@ public class CompanyDetailsDataAdapter {
                             .withLiabilities(liabilities)
                             .build();
                     getCompanyFundamentalDataProfit(ticker, fundamentalData);
-                    isGettingFundamentalData = true;
                     Log.d("getCompanyFundamentalData", "Successfully");
                 } else {
-                    isGettingFundamentalData = false;
+                    companyAdapter.messageWentWrong("save Fundamental Data");
                     Log.d("getCompanyFundamentalData", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
-                isGettingFundamentalData = false;
+                companyAdapter.messageWentWrong("save Fundamental Data");
                 Log.d("getCompanyFundamentalData", "FAILED");
             }
         });
@@ -132,35 +126,19 @@ public class CompanyDetailsDataAdapter {
                     fundamentalData.setProfit(profit);
                     stockBrainRepository.saveEntity(fundamentalData);
                     companyAdapter.sendData(ticker);
-                    isGettingFundamentalData = true;
                     Log.d("getCompanyFundamentalDataProfit", "Successfully");
                 } else {
-                    isGettingFundamentalData = false;
+
+                    companyAdapter.messageWentWrong("save Fundamental Data");
                     Log.d("getCompanyFundamentalDataProfit", "Response Failed");
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompanyPojo>> call, Throwable t) {
-                isGettingFundamentalData = false;
+                companyAdapter.messageWentWrong("save Fundamental Data");
                 Log.d("getCompanyFundamentalDataProfit", "FAILED");
             }
         });
-    }
-
-    public boolean isGettingPrices() {
-        return isGettingPrices;
-    }
-
-    public void setGettingPrices(boolean gettingPrices) {
-        isGettingPrices = gettingPrices;
-    }
-
-    public boolean isGettingFundamentalData() {
-        return isGettingFundamentalData;
-    }
-
-    public void setGettingFundamentalData(boolean gettingFundamentalData) {
-        isGettingFundamentalData = gettingFundamentalData;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.stockbrain.viewmodel;
 
+import android.util.Log;
+
 import com.example.stockbrain.model.businessobject.DailyPrice;
 import com.example.stockbrain.model.businessobject.FundamentalData;
 import com.example.stockbrain.model.businessobject.SecurityItem;
@@ -11,6 +13,18 @@ public class AllCompanyDetails {
     private FundamentalData fundamentalData;
     private DailyPrice dailyPrice;
 
+    public AllCompanyDetails(String ticker) {
+        StockBrainRepository stockBrainRepositoryInstance = RepositoryProvider.getStockBrainRepositoryInstance();
+        Log.d("getAllCompanyDetails", "has started");
+        this.securityItem = (SecurityItem) stockBrainRepositoryInstance.getByTicker(SecurityItem.class, ticker);
+        Log.d("AllCompanyDetails - securityItem", securityItem.getTickerSymbol());
+        this.fundamentalData = (FundamentalData) stockBrainRepositoryInstance.getByTicker(FundamentalData.class, ticker);
+        Log.d("AllCompanyDetails - fundamentalData", fundamentalData.getTickerSymbol());
+        this.dailyPrice = (DailyPrice) stockBrainRepositoryInstance.getByTicker(DailyPrice.class, ticker);
+        Log.d("AllCompanyDetails - dailyPrice", dailyPrice.getTickerSymbol());
+        Log.d("getAllCompanyDetails", "has ended");
+    }
+
     public SecurityItem getSecurityItem() {
         return securityItem;
     }
@@ -21,13 +35,5 @@ public class AllCompanyDetails {
 
     public DailyPrice getDailyPrice() {
         return dailyPrice;
-    }
-
-    public AllCompanyDetails getAllCompanyDetails(String ticker) {
-        StockBrainRepository stockBrainRepositoryInstance = RepositoryProvider.getStockBrainRepositoryInstance();
-        this.securityItem = (SecurityItem) stockBrainRepositoryInstance.getByTicker(SecurityItem.class, ticker);
-        this.fundamentalData = (FundamentalData) stockBrainRepositoryInstance.getByTicker(FundamentalData.class, ticker);
-        this.dailyPrice = (DailyPrice) stockBrainRepositoryInstance.getByTicker(DailyPrice.class, ticker);
-        return this;
     }
 }

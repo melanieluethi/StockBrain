@@ -170,4 +170,8 @@ public class MainActivity extends AppCompatActivity {
     public String getCompanyPicked() {
         return companyPicked;
     }
+
+    public void messageWentWrong(String error) {
+        Toast.makeText(MainActivity.this, "Something went wrong! Couldn't " + error + ".", Toast.LENGTH_SHORT).show();
+    }
 }
