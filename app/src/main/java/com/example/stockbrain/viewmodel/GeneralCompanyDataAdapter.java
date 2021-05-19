@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.model.businessobject.SecurityItemBuilder;
 import com.example.stockbrain.model.database.RepositoryProvider;
-import com.example.stockbrain.model.database.StockBrainRepository;
+import com.example.stockbrain.model.database.SecurityItemRepository;
 import com.example.stockbrain.model.rest.pojo.CompanyLogoPojo;
 import com.example.stockbrain.model.rest.pojo.CompanyPojo;
 import com.example.stockbrain.model.rest.service.StockBrainService;
@@ -19,11 +19,11 @@ import retrofit2.Response;
 
 public class GeneralCompanyDataAdapter {
     private CompanyAdapter companyAdapter;
-    private StockBrainRepository stockBrainRepository;
+    private SecurityItemRepository securityItemRepository;
 
     public GeneralCompanyDataAdapter(CompanyAdapter companyAdapter){
         this.companyAdapter = companyAdapter;
-        stockBrainRepository = RepositoryProvider.getStockBrainRepositoryInstance();
+        securityItemRepository = RepositoryProvider.getSecurityItemRepositoryInstance();
     }
 
     protected void getCompanyGeneral(String ticker) {
@@ -68,7 +68,7 @@ public class GeneralCompanyDataAdapter {
                     if (!response.body().isEmpty()) {
                         String url = response.body().get(0).getLogo();
                         securityItem.setUrlLogo(url);
-                        stockBrainRepository.saveEntity(securityItem);
+                        securityItemRepository.saveEntity(securityItem);
                         companyAdapter.addCompanyList(securityItem);
                         companyAdapter.buildMainActivityList();
                         companyAdapter.messageSuccessfully("Added Company " + securityItem.getName());

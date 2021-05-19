@@ -8,7 +8,7 @@ import com.example.stockbrain.model.businessobject.DailyPrice;
 import com.example.stockbrain.model.businessobject.FundamentalData;
 import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.model.database.RepositoryProvider;
-import com.example.stockbrain.model.database.StockBrainRepository;
+import com.example.stockbrain.model.database.SecurityItemRepository;
 import com.example.stockbrain.view.MainActivity;
 
 import java.util.ArrayList;
@@ -16,20 +16,20 @@ import java.util.ArrayList;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyAdapter implements CompanyAdapterInterface {
     private ArrayList<SecurityItem> securityItemList = new ArrayList<>();
-    private StockBrainRepository stockBrainRepositoryInstance = RepositoryProvider.getStockBrainRepositoryInstance();
+    private SecurityItemRepository securityItemRepositoryInstance = RepositoryProvider.getSecurityItemRepositoryInstance();
     private MainActivity mainActivity;
 
     public CompanyAdapter() {
-        securityItemList.addAll(stockBrainRepositoryInstance.getAllItems());
+        securityItemList.addAll(securityItemRepositoryInstance.getAllItems());
     }
 
     public CompanyAdapter(MainActivity mainActivity) {
-        securityItemList.addAll(stockBrainRepositoryInstance.getAllItems());
+        securityItemList.addAll(securityItemRepositoryInstance.getAllItems());
         this.mainActivity = mainActivity;
     }
 
     public void createCompany(String ticker) {
-        SecurityItem securityItem = (SecurityItem) stockBrainRepositoryInstance.getByTicker(SecurityItem.class, ticker);
+        SecurityItem securityItem = securityItemRepositoryInstance.getByTicker(ticker);
         if (securityItem == null) {
             GeneralCompanyDataAdapter generalCompanyAdapter = new GeneralCompanyDataAdapter(this);
             generalCompanyAdapter.getCompanyGeneral(ticker);
@@ -39,21 +39,21 @@ public class CompanyAdapter implements CompanyAdapterInterface {
     @Override
     public void deleteCompany(String ticker) {
         deleteCompanyDetails(ticker);
-        SecurityItem securityItem = (SecurityItem) stockBrainRepositoryInstance.getByTicker(SecurityItem.class, ticker);
+        SecurityItem securityItem = securityItemRepositoryInstance.getByTicker(ticker);
         if (securityItem != null) {
-            stockBrainRepositoryInstance.deleteEntity(securityItem);
+            securityItemRepositoryInstance.deleteEntity(securityItem);
             securityItemList.remove(securityItem);
         }
     }
 
     private void deleteCompanyDetails(String ticker) {
-        FundamentalData fundamentalData = (FundamentalData) stockBrainRepositoryInstance.getByTicker(FundamentalData.class, ticker);
+        FundamentalData fundamentalData = (FundamentalData) RepositoryProvider.getFundamentalDataRepositoryInstance().getByTicker(ticker);
         if (fundamentalData != null)
-            stockBrainRepositoryInstance.deleteEntity(fundamentalData);
+            securityItemRepositoryInstance.deleteEntity(fundamentalData);
 
-        DailyPrice dailyPrice = (DailyPrice) stockBrainRepositoryInstance.getByTicker(DailyPrice.class, ticker);
+        DailyPrice dailyPrice = (DailyPrice) RepositoryProvider.getDailyPriceRepositoryInstance().getByTicker(ticker);
         if (dailyPrice != null)
-            stockBrainRepositoryInstance.deleteEntity(dailyPrice);
+            securityItemRepositoryInstance.deleteEntity(dailyPrice);
     }
 
     public ArrayList<SecurityItem> getCompanyList() {

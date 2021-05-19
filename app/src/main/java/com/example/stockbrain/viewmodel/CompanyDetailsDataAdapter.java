@@ -10,7 +10,6 @@ import com.example.stockbrain.model.businessobject.DailyPriceBuilder;
 import com.example.stockbrain.model.businessobject.FundamentalData;
 import com.example.stockbrain.model.businessobject.FundamentalDataBuilder;
 import com.example.stockbrain.model.database.RepositoryProvider;
-import com.example.stockbrain.model.database.StockBrainRepository;
 import com.example.stockbrain.model.rest.pojo.CompanyPojo;
 import com.example.stockbrain.model.rest.service.StockBrainService;
 import com.example.stockbrain.model.rest.util.RestConstants;
@@ -24,11 +23,9 @@ import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CompanyDetailsDataAdapter {
-    private StockBrainRepository stockBrainRepository;
     private CompanyAdapter companyAdapter;
 
     public CompanyDetailsDataAdapter(CompanyAdapter companyAdapter){
-        stockBrainRepository = RepositoryProvider.getStockBrainRepositoryInstance();
         this.companyAdapter = companyAdapter;
     }
 
@@ -51,11 +48,11 @@ public class CompanyDetailsDataAdapter {
                     if(!dataPrices[8].contains("null"))
                         volume = Double.parseDouble(dataPrices[8]);
                     DailyPrice dailyPrice = new DailyPriceBuilder()
-                            .withTickerSymbol(dataPrices[1])
+                            .withTickerSymbol(ticker)
                             .withClosingPrice(closingPrice)
                             .withVolume(volume.intValue())
                             .build();
-                    stockBrainRepository.saveEntity(dailyPrice);
+                    RepositoryProvider.getDailyPriceRepositoryInstance().saveEntity(dailyPrice);
                     Log.d("getCompanyPrices", "Successfully");
                     getCompanyFundamentalData(ticker);
                 } else {
@@ -80,7 +77,6 @@ public class CompanyDetailsDataAdapter {
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
                     String[] dataStatements = response.body().get(0).getData().get(0).toString().split(",");
-                    String tickerSymbol = dataStatements[1];
                     Double revenue = 0.0;
                     Double assets = 0.0;
                     Double liabilities = 0.0;
@@ -91,7 +87,7 @@ public class CompanyDetailsDataAdapter {
                     if (!dataStatements[82].contains("null"))
                         liabilities = Double.parseDouble(dataStatements[82]);
                     FundamentalData fundamentalData = new FundamentalDataBuilder()
-                            .withTickerSymbol(tickerSymbol)
+                            .withTickerSymbol(ticker)
                             .withRevenue(revenue)
                             .withAssets(assets)
                             .withLiabilities(liabilities)
@@ -124,7 +120,7 @@ public class CompanyDetailsDataAdapter {
                     if (!dataProfit[18].equals("null"))
                         profit = Double.parseDouble(dataProfit[18]);
                     fundamentalData.setProfit(profit);
-                    stockBrainRepository.saveEntity(fundamentalData);
+                    RepositoryProvider.getFundamentalDataRepositoryInstance().saveEntity(fundamentalData);
                     companyAdapter.messageSuccessfully("Saved Detail Data.");
                     companyAdapter.sendData(ticker);
                     Log.d("getCompanyFundamentalDataProfit", "Successfully");

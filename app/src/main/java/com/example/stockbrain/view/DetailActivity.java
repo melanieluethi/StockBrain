@@ -48,16 +48,14 @@ public class DetailActivity extends AppCompatActivity {
                 stImageURL = si.getUrlLogo();
             }
         }
-//        AllCompanyDetails allCompanyDetails = new AllCompanyDetails(stTicker);
-//        allCompanyDetails.getSecurityItem().getName();
-//        allCompanyDetails.getDailyPrice().getVolume();
 
         Glide.with(DetailActivity.this).load(stImageURL).into(ivDetailCompanyLogo);
 
         tvDetailCompanyName.setText(stCompanyName);
         tvDetailCompanyTicker.setText(stTicker);
 
-        //System.out.println(allCompanyDetails.getAllCompanyDetails(stTicker));
+        AllCompanyDetails allCompanyDetails = new AllCompanyDetails(stTicker);
+        tvAssets.setText(allCompanyDetails.getFundamentalData().getAssets().toString());
 
     }
 

@@ -6,12 +6,28 @@ import androidx.annotation.RequiresApi;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class RepositoryProvider {
-    private static StockBrainRepository stockBrainRepository;
+    private static SecurityItemRepository securityItemRepository;
+    private static FundamentalDataRepository fundamentalDataRepository;
+    private static DailyPriceRepository dailyPriceRepository;
 
-    public static StockBrainRepository getStockBrainRepositoryInstance(){
-        if(stockBrainRepository == null){
-            stockBrainRepository = new StockBrainRepository();
+    public static SecurityItemRepository getSecurityItemRepositoryInstance(){
+        if(securityItemRepository == null){
+            securityItemRepository = new SecurityItemRepository();
         }
-        return stockBrainRepository;
+        return securityItemRepository;
+    }
+
+    public static FundamentalDataRepository getFundamentalDataRepositoryInstance(){
+        if(fundamentalDataRepository == null){
+            fundamentalDataRepository = new FundamentalDataRepository();
+        }
+        return fundamentalDataRepository;
+    }
+
+    public static DailyPriceRepository getDailyPriceRepositoryInstance(){
+        if(dailyPriceRepository == null){
+            dailyPriceRepository = new DailyPriceRepository();
+        }
+        return dailyPriceRepository;
     }
 }

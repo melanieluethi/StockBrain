@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         companyAdapter.createCompany("AAPL");
-        companyAdapter.createCompany("GOOG"  );
+        companyAdapter.createCompany("GOOG");
         companyAdapter.createCompany("MSFT");
         companyAdapter.createCompany("TSLA");
         companyAdapter.createCompany("VOW.DE");

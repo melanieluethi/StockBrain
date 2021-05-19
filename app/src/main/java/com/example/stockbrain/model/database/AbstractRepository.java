@@ -1,9 +1,6 @@
 package com.example.stockbrain.model.database;
 
 import com.activeandroid.Model;
-import com.activeandroid.query.Select;
-
-import java.util.List;
 
 public abstract class AbstractRepository {
     /**
@@ -20,13 +17,5 @@ public abstract class AbstractRepository {
         model.delete();
     }
 
-    /**
-     * To be implemented by subclass. Thought to return all elements
-     * @return
-     */
-    public abstract List<? extends Model> getAllItems();
-
-    public Model getByTicker(Class<? extends Model> entityClass, String tickerSymbol){
-        return new Select().from(entityClass).where("TickerSymbol=?", new Object[]{tickerSymbol}).executeSingle();
-    }
+    public abstract Model getByTicker(String tickerSymbol);
 }
