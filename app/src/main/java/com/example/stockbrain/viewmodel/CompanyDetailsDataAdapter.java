@@ -40,7 +40,8 @@ public class CompanyDetailsDataAdapter {
             @Override
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
-                    String[] dataPrices = response.body().get(0).getData().get(0).toString().split(",");
+                    List<Object> data = response.body().get(0).getData();
+                    String[] dataPrices = data.get(data.size() - 1).toString().split(",");
                     Double closingPrice = 0.0;
                     Double volume = 0.0;
                     if(!dataPrices[7].contains("null"))
