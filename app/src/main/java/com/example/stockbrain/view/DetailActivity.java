@@ -12,6 +12,9 @@ import com.example.stockbrain.model.businessobject.SecurityItem;
 import com.example.stockbrain.viewmodel.AllCompanyDetails;
 import com.example.stockbrain.viewmodel.CompanyAdapter;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class DetailActivity extends AppCompatActivity {
 
     private TextView tvDetailCompanyName, tvDetailCompanyTicker;
@@ -54,11 +57,13 @@ public class DetailActivity extends AppCompatActivity {
         tvDetailCompanyName.setText(stCompanyName);
         tvDetailCompanyTicker.setText(stTicker);
 
+        NumberFormat form = new DecimalFormat("0.000E00");
+
         AllCompanyDetails allCompanyDetails = new AllCompanyDetails(stTicker);
-        tvAssets.setText(allCompanyDetails.getFundamentalData().getAssets().toString());
-        tvLiabilities.setText(allCompanyDetails.getFundamentalData().getLiabilities().toString());
-        tvProfit.setText(allCompanyDetails.getFundamentalData().getProfit().toString());
-        tvRevenue.setText(allCompanyDetails.getFundamentalData().getRevenue().toString());
+        tvAssets.setText(form.format(allCompanyDetails.getFundamentalData().getAssets()));
+        tvLiabilities.setText(form.format(allCompanyDetails.getFundamentalData().getLiabilities()));
+        tvProfit.setText(form.format(allCompanyDetails.getFundamentalData().getProfit()));
+        tvRevenue.setText(form.format(allCompanyDetails.getFundamentalData().getRevenue()));
 
         tvVolume.setText(allCompanyDetails.getDailyPrice().getVolume().toString());
         tvClosingPrice.setText((allCompanyDetails.getDailyPrice().getClosingPrice()).toString());
