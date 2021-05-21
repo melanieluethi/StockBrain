@@ -56,7 +56,12 @@ public class DetailActivity extends AppCompatActivity {
 
         AllCompanyDetails allCompanyDetails = new AllCompanyDetails(stTicker);
         tvAssets.setText(allCompanyDetails.getFundamentalData().getAssets().toString());
+        tvLiabilities.setText(allCompanyDetails.getFundamentalData().getLiabilities().toString());
+        tvProfit.setText(allCompanyDetails.getFundamentalData().getProfit().toString());
+        tvRevenue.setText(allCompanyDetails.getFundamentalData().getRevenue().toString());
 
+        tvVolume.setText(allCompanyDetails.getDailyPrice().getVolume().toString());
+        tvClosingPrice.setText((allCompanyDetails.getDailyPrice().getClosingPrice()).toString());
     }
 
 }
