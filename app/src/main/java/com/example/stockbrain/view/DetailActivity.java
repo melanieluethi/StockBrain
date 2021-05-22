@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.bumptech.glide.Glide;
 import com.example.stockbrain.R;
@@ -26,6 +27,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
@@ -68,5 +70,4 @@ public class DetailActivity extends AppCompatActivity {
         tvVolume.setText(allCompanyDetails.getDailyPrice().getVolume().toString());
         tvClosingPrice.setText((allCompanyDetails.getDailyPrice().getClosingPrice()).toString());
     }
-
 }
