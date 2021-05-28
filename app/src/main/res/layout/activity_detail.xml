@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.45" />
+        app:layout_constraintGuide_percent="0.42" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glDetailVerticalBaseInfo"
@@ -76,10 +76,11 @@
         android:text="@string/stCompanyNameTile"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/glDetailVerticalLogo"
-        android:textSize="24dp"
+        android:textSize="20dp"
         />
 
     <TextView
+        android:layout_marginTop="8dp"
         android:layout_marginStart = "8dp"
         android:id="@+id/tvCompanyTickerTile"
         android:layout_width="wrap_content"
@@ -87,30 +88,35 @@
         android:text="@string/stCompanyTickerTile"
         app:layout_constraintTop_toBottomOf="@+id/tvCompanyNameTile"
         app:layout_constraintStart_toEndOf="@+id/glDetailVerticalLogo"
-        android:textSize="24dp"
+        android:textSize="20dp"
         />
 
     <TextView
         android:layout_marginTop = "16dp"
         android:layout_marginStart = "8dp"
         android:id="@+id/tvDetailCompanyName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Alphabet Inc."
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/glDetailVerticalNameTicker"
-        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="start"
+        android:textSize="20dp"
         android:textColor="@color/black"
         />
     <TextView
+        android:layout_marginTop="8dp"
         android:layout_marginStart = "8dp"
         android:id="@+id/tvDetailCompanyTicker"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="GOOG"
         app:layout_constraintTop_toBottomOf="@+id/tvDetailCompanyName"
         app:layout_constraintStart_toEndOf="@+id/glDetailVerticalNameTicker"
-        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="start"
+        android:textSize="20dp"
         android:textColor="@color/black"
         />
 

@@ -65,8 +65,11 @@ public class DetailActivity extends AppCompatActivity {
         tvAssets.setText(form.format(allCompanyDetails.getFundamentalData().getAssets()));
         tvLiabilities.setText(form.format(allCompanyDetails.getFundamentalData().getLiabilities()));
         tvProfit.setText(form.format(allCompanyDetails.getFundamentalData().getProfit()));
-        tvRevenue.setText(form.format(allCompanyDetails.getFundamentalData().getRevenue()));
-
+        if (allCompanyDetails.getFundamentalData().getRevenue() == 0) {
+            tvRevenue.setText("-");
+        } else {
+            tvRevenue.setText(form.format(allCompanyDetails.getFundamentalData().getRevenue()));
+        }
         tvVolume.setText(allCompanyDetails.getDailyPrice().getVolume().toString());
         tvClosingPrice.setText((allCompanyDetails.getDailyPrice().getClosingPrice()).toString());
     }
