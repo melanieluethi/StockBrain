@@ -78,18 +78,15 @@ public class CompanyDetailsDataAdapter {
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
                     String[] dataStatements = response.body().get(0).getData().get(0).toString().split(",");
-                    Double revenue = 0.0;
+
                     Double assets = 0.0;
                     Double liabilities = 0.0;
-                    if (!dataStatements[76].contains("null"))
-                        revenue = Double.parseDouble(dataStatements[76]);
-                    if (!dataStatements[30].contains("null"))
-                        assets = Double.parseDouble(dataStatements[30]);
+                    if (!dataStatements[50].contains("null"))
+                        assets = Double.parseDouble(dataStatements[50]);
                     if (!dataStatements[82].contains("null"))
                         liabilities = Double.parseDouble(dataStatements[82]);
                     FundamentalData fundamentalData = new FundamentalDataBuilder()
                             .withTickerSymbol(ticker)
-                            .withRevenue(revenue)
                             .withAssets(assets)
                             .withLiabilities(liabilities)
                             .build();
@@ -117,9 +114,13 @@ public class CompanyDetailsDataAdapter {
             public void onResponse(Call<List<CompanyPojo>> call, Response<List<CompanyPojo>> response) {
                 if(response.isSuccessful()) {
                     String[] dataProfit = response.body().get(0).getData().get(0).toString().split(",");
+                    Double revenue = 0.0;
                     Double profit = 0.0;
-                    if (!dataProfit[18].equals("null"))
-                        profit = Double.parseDouble(dataProfit[18]);
+                    if (!dataProfit[10].contains("null"))
+                        revenue = Double.parseDouble(dataProfit[10]);
+                    if (!dataProfit[64].equals("null"))
+                        profit = Double.parseDouble(dataProfit[64]);
+                    fundamentalData.setRevenue(revenue);
                     fundamentalData.setProfit(profit);
                     RepositoryProvider.getFundamentalDataRepositoryInstance().saveEntity(fundamentalData);
                     companyAdapter.messageSuccessfully("Saved Detail Data.");
